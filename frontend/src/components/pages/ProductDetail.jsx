@@ -1,47 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '../../api/axios.js';
 import { useParams, Link } from 'react-router-dom';
-import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus } from 'lucide-react';
+import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus, CloudCog } from 'lucide-react';
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const [selectedImage, setSelectedImage] = useState(0);
+  const { slug } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  const [product, setproduct] = useState([]);
+
+  console.log("this is slug", slug);
+
+
+  useEffect(() => {
+
+    ; (async () => {
+      try {
+        const safeslug = encodeURIComponent(slug);
+        const resdata = await api.get(`/products/${safeslug}`)
+        console.log(resdata)
+        setproduct(resdata.data.productdata);
+
+      } catch (error) {
+        console.log("error while get single product", error)
+      }
+    })();
+
+
+  }, [slug]);
+  console.log("tis is data", product)
 
   // Mock product data (in real app, fetch based on id)
-  const product = {
-    id: 1,
-    name: "Midnight Elegance",
-    brand: "LuxeScent",
-    price: 89.99,
-    originalPrice: 120.00,
-    images: [
-      "https://images.pexels.com/photos/1191710/pexels-photo-1191710.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "https://images.pexels.com/photos/1179760/pexels-photo-1179760.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "https://images.pexels.com/photos/1766678/pexels-photo-1766678.jpeg?auto=compress&cs=tinysrgb&w=600",
-      "https://images.pexels.com/photos/1961795/pexels-photo-1961795.jpeg?auto=compress&cs=tinysrgb&w=600"
-    ],
-    rating: 4.8,
-    reviews: 234,
-    category: "women",
-    isNew: false,
-    isSale: true,
-    inStock: true,
-    description: "Midnight Elegance is a captivating fragrance that embodies sophistication and mystery. This luxurious scent opens with fresh top notes of bergamot and pink pepper, evolving into a heart of jasmine and rose, and settling into a warm base of sandalwood and vanilla.",
-    notes: {
-      top: ["Bergamot", "Pink Pepper", "Lemon"],
-      middle: ["Jasmine", "Rose", "Lily of the Valley"],
-      base: ["Sandalwood", "Vanilla", "White Musk"]
-    },
-    details: {
-      size: "50ml / 1.7 fl oz",
-      concentration: "Eau de Parfum",
-      longevity: "6-8 hours",
-      sillage: "Moderate to Strong",
-      season: "All seasons",
-      occasion: "Evening, Special occasions"
-    }
-  };
+  // const product = {
+  //   id: 1,
+  //   name: "Midnight Elegance",
+  //   brand: "LuxeScent",
+  //   price: 89.99,
+  //   originalPrice: 120.00,
+  //   images: [
+  //     "https://images.pexels.com/photos/1191710/pexels-photo-1191710.jpeg?auto=compress&cs=tinysrgb&w=600",
+  //     "https://images.pexels.com/photos/1179760/pexels-photo-1179760.jpeg?auto=compress&cs=tinysrgb&w=600",
+  //     "https://images.pexels.com/photos/1766678/pexels-photo-1766678.jpeg?auto=compress&cs=tinysrgb&w=600",
+  //     "https://images.pexels.com/photos/1961795/pexels-photo-1961795.jpeg?auto=compress&cs=tinysrgb&w=600"
+  //   ],
+  //   rating: 4.8,
+  //   reviews: 234,
+  //   category: "women",
+  //   isNew: false,
+  //   isSale: true,
+  //   inStock: true,
+  //   description: "Midnight Elegance is a captivating fragrance that embodies sophistication and mystery. This luxurious scent opens with fresh top notes of bergamot and pink pepper, evolving into a heart of jasmine and rose, and settling into a warm base of sandalwood and vanilla.",
+  //   notes: {
+  //     top: ["Bergamot", "Pink Pepper", "Lemon"],
+  //     middle: ["Jasmine", "Rose", "Lily of the Valley"],
+  //     base: ["Sandalwood", "Vanilla", "White Musk"]
+  //   },
+  //   details: {
+  //     size: "50ml / 1.7 fl oz",
+  //     concentration: "Eau de Parfum",
+  //     longevity: "6-8 hours",
+  //     sillage: "Moderate to Strong",
+  //     season: "All seasons",
+  //     occasion: "Evening, Special occasions"
+  //   }
+  // };
 
   const relatedProducts = [
     {
@@ -75,6 +97,7 @@ const ProductDetail = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="mb-8">
+
           <ol className="flex items-center space-x-2 text-sm text-gray-500">
             <li><Link to="/" className="hover:text-purple-600">Home</Link></li>
             <li>/</li>
@@ -89,30 +112,10 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="aspect-square overflow-hidden rounded-2xl bg-white shadow-lg">
               <img
-                src={product.images[selectedImage]}
+                src={product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
-            </div>
-            
-            <div className="grid grid-cols-4 gap-4">
-              {product.images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`aspect-square overflow-hidden rounded-lg border-2 transition-all duration-200 ${
-                    selectedImage === index
-                      ? 'border-purple-500 ring-2 ring-purple-200'
-                      : 'border-gray-200 hover:border-purple-300'
-                  }`}
-                >
-                  <img
-                    src={image}
-                    alt={`${product.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
             </div>
           </div>
 
@@ -120,19 +123,18 @@ const ProductDetail = () => {
           <div className="space-y-6">
             {/* Header */}
             <div>
-              <p className="text-sm text-gray-500 mb-2">{product.brand}</p>
+              <p className="text-sm text-gray-500 mb-2">{product.name}</p>
               <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-              
+
               <div className="flex items-center mb-4">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-5 w-5 ${
-                        i < Math.floor(product.rating)
-                          ? 'text-yellow-400 fill-current'
-                          : 'text-gray-300'
-                      }`}
+                      className={`h-5 w-5 ${i < Math.floor(product.rating)
+                        ? 'text-yellow-400 fill-current'
+                        : 'text-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
@@ -140,9 +142,9 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-purple-600">${product.price}</span>
-                {product.originalPrice && (
-                  <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
+                <span className="text-3xl font-bold text-purple-600">${product.selling_price}</span>
+                {product.price && (
+                  <span className="text-xl text-gray-500 line-through">${product.price}</span>
                 )}
                 {product.isSale && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -178,25 +180,26 @@ const ProductDetail = () => {
                     </button>
                   </div>
                   <span className="text-sm text-gray-600">
-                    {product.inStock ? 'In Stock' : 'Out of Stock'}
+                    {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  disabled={!product.inStock}
+                  disabled={!product.stock}
+                  // onClick={}
                   className="flex-1 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center space-x-2"
                 >
                   <ShoppingBag className="h-5 w-5" />
                   <span>Add to Cart</span>
                 </button>
-                
+
                 <button className="px-6 py-4 border-2 border-gray-300 rounded-xl font-semibold hover:border-purple-500 hover:text-purple-600 transition-all duration-200 flex items-center justify-center space-x-2">
                   <Heart className="h-5 w-5" />
                   <span className="hidden sm:inline">Wishlist</span>
                 </button>
-                
+
                 <button className="px-6 py-4 border-2 border-gray-300 rounded-xl font-semibold hover:border-purple-500 hover:text-purple-600 transition-all duration-200 flex items-center justify-center">
                   <Share2 className="h-5 w-5" />
                 </button>
@@ -212,7 +215,7 @@ const ProductDetail = () => {
                   <p className="text-sm text-gray-600">On orders over $50</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Shield className="h-6 w-6 text-purple-600" />
                 <div>
@@ -220,7 +223,7 @@ const ProductDetail = () => {
                   <p className="text-sm text-gray-600">100% genuine</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <RotateCcw className="h-6 w-6 text-purple-600" />
                 <div>
@@ -240,11 +243,10 @@ const ProductDetail = () => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition-colors duration-200 ${
-                    activeTab === tab
-                      ? 'border-purple-500 text-purple-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition-colors duration-200 ${activeTab === tab
+                    ? 'border-purple-500 text-purple-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
                 >
                   {tab}
                 </button>
@@ -258,8 +260,8 @@ const ProductDetail = () => {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Product Description</h3>
                 <p className="text-gray-700 leading-relaxed mb-6">{product.description}</p>
                 <p className="text-gray-700 leading-relaxed">
-                  Perfect for the modern woman who appreciates timeless elegance with a contemporary twist. 
-                  This fragrance is crafted with the finest ingredients sourced from around the world, 
+                  Perfect for the modern world appreciates timeless elegance with a contemporary twist.
+                  This fragrance is crafted with the finest ingredients sourced from around the world,
                   ensuring a luxurious experience with every spray.
                 </p>
               </div>
@@ -327,7 +329,7 @@ const ProductDetail = () => {
                         <span className="ml-3 text-sm text-gray-500">2 weeks ago</span>
                       </div>
                       <p className="text-gray-700">
-                        Absolutely love this fragrance! It's sophisticated yet playful, perfect for both 
+                        Absolutely love this fragrance! It's sophisticated yet playful, perfect for both
                         day and evening wear. The longevity is impressive and I always get compliments when wearing it.
                       </p>
                     </div>
@@ -337,6 +339,9 @@ const ProductDetail = () => {
             )}
           </div>
         </div>
+
+
+        {/* -----------------------------  relatedProduct ------------------------- */}
 
         {/* Related Products */}
         <div>
@@ -362,11 +367,10 @@ const ProductDetail = () => {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(relatedProduct.rating)
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-300'
-                          }`}
+                          className={`h-4 w-4 ${i < Math.floor(relatedProduct.rating)
+                            ? 'text-yellow-400 fill-current'
+                            : 'text-gray-300'
+                            }`}
                         />
                       ))}
                     </div>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu, X, Heart } from 'lucide-react';
-import useAuth from '../../context/Authcontext';
+import useAuth from '../../context/Authcontext.jsx';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount] = useState(3);
+  const [cartCount] = useState(0);
   const navigate = useNavigate();
 
   const { user, loading } = useAuth();
@@ -98,7 +98,7 @@ const Navbar = () => {
                     </Link>
                   )
             }
-            
+
             {/* Admin Panel Link (admins only) */}
             {user?.role === 'admin' && (
               <Link to="/admin" className="hidden lg:block nav-link">
@@ -171,13 +171,37 @@ const Navbar = () => {
               >
                 Contact
               </Link>
-              <Link
-                to="/login"
-                className="block px-3 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
+
+              {/* admin page in mobile */}
+              {user?.role === 'admin' && (
+                <Link to="/admin" className="block px-3 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200"
+                >
+                  Admin Panel
+                </Link>
+              )}
+
+              {/* userprofile in mobile */}
+              {
+                user ?
+                  (
+                    <Link to='/profile'
+                      className="block px-3 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200"
+                      onClick={() => { setIsMenuOpen(false) }}
+                    >
+                      <User className="h-6 w-6" />
+                    </Link>
+                  ) :
+                  (
+
+                    <Link
+                      to="/login"
+                      className="block px-3 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User className="h-6 w-6" />
+                    </Link>
+                  )
+              }
             </div>
           </div>
         </div>

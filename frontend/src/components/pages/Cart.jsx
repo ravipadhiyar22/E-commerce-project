@@ -3,41 +3,7 @@ import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Shield } from 'lucide-react';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Midnight Elegance",
-      brand: "LuxeScent",
-      price: 89.99,
-      originalPrice: 120.00,
-      quantity: 2,
-      image: "https://images.pexels.com/photos/1191710/pexels-photo-1191710.jpeg?auto=compress&cs=tinysrgb&w=300",
-      size: "50ml",
-      inStock: true
-    },
-    {
-      id: 2,
-      name: "Golden Sunrise",
-      brand: "Aurora",
-      price: 95.99,
-      originalPrice: 130.00,
-      quantity: 1,
-      image: "https://images.pexels.com/photos/1961795/pexels-photo-1961795.jpeg?auto=compress&cs=tinysrgb&w=300",
-      size: "100ml",
-      inStock: true
-    },
-    {
-      id: 3,
-      name: "Ocean Breeze",
-      brand: "AquaLux",
-      price: 75.99,
-      originalPrice: 100.00,
-      quantity: 1,
-      image: "https://images.pexels.com/photos/1766678/pexels-photo-1766678.jpeg?auto=compress&cs=tinysrgb&w=300",
-      size: "50ml",
-      inStock: false
-    }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
 
   const [promoCode, setPromoCode] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
@@ -206,11 +172,10 @@ const Cart = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg ${
-                      benefit.title === "Free Shipping" && subtotal > 50 
-                        ? 'bg-green-100 text-green-600' 
-                        : 'bg-purple-100 text-purple-600'
-                    }`}>
+                    <div className={`p-2 rounded-lg ${benefit.title === "Free Shipping" && subtotal > 50
+                      ? 'bg-green-100 text-green-600'
+                      : 'bg-purple-100 text-purple-600'
+                      }`}>
                       {benefit.icon}
                     </div>
                     <div>
@@ -251,41 +216,41 @@ const Cart = () => {
             {/* Order Summary */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
                   <span className="font-medium">${subtotal.toFixed(2)}</span>
                 </div>
-                
+
                 {savings > 0 && (
                   <div className="flex justify-between text-green-600">
                     <span>Savings</span>
                     <span>-${savings.toFixed(2)}</span>
                   </div>
                 )}
-                
+
                 {isPromoApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount (LUXE10)</span>
                     <span>-${discount.toFixed(2)}</span>
                   </div>
                 )}
-                
+
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-medium">
                     {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
                   <span className="font-medium">${tax.toFixed(2)}</span>
                 </div>
-                
+
                 <hr className="border-gray-200" />
-                
+
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
                   <span className="text-purple-600">${total.toFixed(2)}</span>

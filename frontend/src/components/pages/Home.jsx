@@ -13,9 +13,7 @@ const Home = () => {
       try {
 
         const resproduct = await api.get("/products/allproduct");
-        console.log(resproduct)
         setproduct(resproduct.data.products)
-        console.log(product)
       } catch (error) {
         console.log("error while fetch allproducts", error);
       }
@@ -23,22 +21,21 @@ const Home = () => {
     })();
   }, [])
 
-
   const categories = [
     {
       name: "For Her",
       image: "https://images.pexels.com/photos/1191536/pexels-photo-1191536.jpeg?auto=compress&cs=tinysrgb&w=400",
-      count: 125
+      value: "women"
     },
     {
       name: "For Him",
       image: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400",
-      count: 98
+      value: "male"
     },
     {
       name: "Unisex",
       image: "https://images.pexels.com/photos/1070049/pexels-photo-1070049.jpeg?auto=compress&cs=tinysrgb&w=400",
-      count: 67
+      value: "unisex"
     }
   ];
 
@@ -67,7 +64,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
+      {/* ------------------Hero Section------------------ */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-amber-900/90 z-10"></div>
         <div
@@ -104,7 +101,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* ------------------Categories Section ----------------------*/}
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -120,7 +117,7 @@ const Home = () => {
             {categories.map((category, index) => (
               <Link
                 key={index}
-                to="/products"
+                to={`/products/?category=${category.value}`}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
               >
                 <div className="aspect-w-16 aspect-h-20 relative">
@@ -132,7 +129,6 @@ const Home = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 text-white">
                     <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                    <p className="text-gray-200">{category.count} Products</p>
                   </div>
                 </div>
               </Link>
@@ -141,7 +137,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* -----------------------Featured Products ----------------------- */}
       <section className="py-16 lg:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -153,7 +149,7 @@ const Home = () => {
             </p>
           </div>
 
-          {/* featured product container */}
+          {/*----------------------- featured product container----------------------- */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {
               product.map((product) =>
@@ -173,7 +169,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* ----------------------- Benefits Section ----------------------- */}
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -190,7 +186,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Newsletter Section */}
+      {/*----------------------- Newsletter Section----------------------- */}
       <section className="py-16 lg:py-24 bg-gradient-to-r from-purple-900 to-amber-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">

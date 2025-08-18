@@ -1,16 +1,19 @@
 import express from "express"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
-import { addproduct, deleteproduct, getallproduct } from "../controller/product.controller.js"
+import { addproduct, deleteproduct, getallproduct, getproductcard, singleproduct } from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
 const router = express.Router()
 
 
 router.get("/allproduct", getallproduct);
+router.get("/productcard", getproductcard);
+
+router.get("/:slug", singleproduct);
 
 //protected routes
 
-
+    
 //admin routers
 router.post("/addproduct",
     verifyJWT,
@@ -19,7 +22,7 @@ router.post("/addproduct",
     addproduct
 )
 
-router.delete("deleteproduct/:id",
+router.delete("/deleteproduct/:id",
     verifyJWT,
     authorizeRoles("admin"),
     deleteproduct

@@ -33,6 +33,9 @@ const productSchema = new mongoose.Schema(
             // required: true
 
         },
+        image_public_id: {
+            type: String
+        },
         stock: {
             type: Number,
             required: true

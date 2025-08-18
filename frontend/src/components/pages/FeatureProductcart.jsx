@@ -46,7 +46,7 @@ function FeatureProductcart({ product }) {
                 </div>
 
                 <Link
-                    to={`/product/${product._id}`}
+                    to={`/products/${product.slug}`}
                     className="w-full bg-gradient-to-r from-purple-600 to-amber-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-amber-600 transition-all duration-200 flex items-center justify-center space-x-2 group"
                 >
                     <ShoppingBag className="h-5 w-5" />
