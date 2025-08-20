@@ -135,6 +135,8 @@ const getproductcard = async (req, res) => {
     }
 }
 
+//-------------------------------get single product ---------------------------------------
+
 const singleproduct = async (req, res) => {
     try {
         const { slug } = req.params;

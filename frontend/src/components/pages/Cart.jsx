@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Shield } from 'lucide-react';
+import { readLocalCart, removeLocalItem, setLocalQuantity } from "../../utils/LocalCart.js"
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
+  useEffect(() => {
+    const items = readLocalCart();
+    setCartItems(items)
+  }, [])
+
   const [promoCode, setPromoCode] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
 
+
   const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    const items = setLocalQuantity(id, newQuantity);
+    setCartItems(items);
   };
 
   const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    const data = removeLocalItem(id);
+    setCartItems(data);
   };
 
   const applyPromoCode = () => {
@@ -30,14 +34,14 @@ const Cart = () => {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.selling_price * item.quantity), 0);
   const savings = cartItems.reduce((sum, item) => {
-    const itemSavings = item.originalPrice ? (item.originalPrice - item.price) * item.quantity : 0;
+    const itemSavings = item.price ? (item.price - item.selling_price) * item.quantity : 0;
     return sum + itemSavings;
   }, 0);
   const discount = isPromoApplied ? subtotal * 0.1 : 0;
   const shipping = subtotal > 50 ? 0 : 9.99;
-  const tax = (subtotal - discount) * 0.08;
+  const tax = (subtotal - discount) * 0.03;
   const total = subtotal - discount + shipping + tax;
 
   const benefits = [
@@ -58,6 +62,7 @@ const Cart = () => {
     }
   ];
 
+  //if cart is empty than disply shop now
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
@@ -115,8 +120,8 @@ const Cart = () => {
                       <div>
                         <p className="text-sm text-gray-500 mb-1">{item.brand}</p>
                         <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-                        <p className="text-sm text-gray-600">Size: {item.size}</p>
-                        {!item.inStock && (
+                        {/* <p className="text-sm text-gray-600">Size: {item.size}</p> */}
+                        {(item.stock !== undefined && item.stock <= 0) && (
                           <p className="text-sm text-red-600 font-medium mt-1">Out of Stock</p>
                         )}
                       </div>
@@ -131,9 +136,9 @@ const Cart = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       {/* Price */}
                       <div className="flex items-center space-x-2">
-                        <span className="text-xl font-bold text-purple-600">${item.price}</span>
-                        {item.originalPrice && (
-                          <span className="text-sm text-gray-500 line-through">${item.originalPrice}</span>
+                        <span className="text-xl font-bold text-purple-600">${item.selling_price}</span>
+                        {item.price && (
+                          <span className="text-sm text-gray-500 line-through">${item.price}</span>
                         )}
                       </div>
 
@@ -143,7 +148,7 @@ const Cart = () => {
                         <div className="flex items-center border border-gray-300 rounded-lg">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            disabled={!item.inStock}
+                            disabled={item.stock === 0}
                             className="p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                           >
                             <Minus className="h-4 w-4" />
@@ -151,14 +156,14 @@ const Cart = () => {
                           <span className="px-4 py-2 font-medium">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            disabled={!item.inStock}
+                            disabled={item === 0}
                             className="p-2 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                           >
                             <Plus className="h-4 w-4" />
                           </button>
                         </div>
                         <span className="text-lg font-semibold text-gray-900">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${(item.selling_price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>

@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api/axios.js';
 import { useParams, Link } from 'react-router-dom';
 import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus, CloudCog } from 'lucide-react';
+import { setLocalQuantity, addLocalItem, toCartItemFromProduct } from "../../utils/LocalCart.js"
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [product, setproduct] = useState([]);
-
-  console.log("this is slug", slug);
-
 
   useEffect(() => {
 
@@ -26,44 +24,12 @@ const ProductDetail = () => {
       }
     })();
 
-
   }, [slug]);
-  console.log("tis is data", product)
 
-  // Mock product data (in real app, fetch based on id)
-  // const product = {
-  //   id: 1,
-  //   name: "Midnight Elegance",
-  //   brand: "LuxeScent",
-  //   price: 89.99,
-  //   originalPrice: 120.00,
-  //   images: [
-  //     "https://images.pexels.com/photos/1191710/pexels-photo-1191710.jpeg?auto=compress&cs=tinysrgb&w=600",
-  //     "https://images.pexels.com/photos/1179760/pexels-photo-1179760.jpeg?auto=compress&cs=tinysrgb&w=600",
-  //     "https://images.pexels.com/photos/1766678/pexels-photo-1766678.jpeg?auto=compress&cs=tinysrgb&w=600",
-  //     "https://images.pexels.com/photos/1961795/pexels-photo-1961795.jpeg?auto=compress&cs=tinysrgb&w=600"
-  //   ],
-  //   rating: 4.8,
-  //   reviews: 234,
-  //   category: "women",
-  //   isNew: false,
-  //   isSale: true,
-  //   inStock: true,
-  //   description: "Midnight Elegance is a captivating fragrance that embodies sophistication and mystery. This luxurious scent opens with fresh top notes of bergamot and pink pepper, evolving into a heart of jasmine and rose, and settling into a warm base of sandalwood and vanilla.",
-  //   notes: {
-  //     top: ["Bergamot", "Pink Pepper", "Lemon"],
-  //     middle: ["Jasmine", "Rose", "Lily of the Valley"],
-  //     base: ["Sandalwood", "Vanilla", "White Musk"]
-  //   },
-  //   details: {
-  //     size: "50ml / 1.7 fl oz",
-  //     concentration: "Eau de Parfum",
-  //     longevity: "6-8 hours",
-  //     sillage: "Moderate to Strong",
-  //     season: "All seasons",
-  //     occasion: "Evening, Special occasions"
-  //   }
-  // };
+  function handleclick() {
+    addLocalItem(product, quantity);
+  }
+
 
   const relatedProducts = [
     {
@@ -146,11 +112,10 @@ const ProductDetail = () => {
                 {product.price && (
                   <span className="text-xl text-gray-500 line-through">${product.price}</span>
                 )}
-                {product.isSale && (
+                {product.price && product.selling_price && product.price > product.selling_price && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Save ${(product.originalPrice - product.price).toFixed(2)}
-                  </span>
-                )}
+                    Save ${(product.price - product.selling_price).toFixed(2)}
+                  </span>)}
               </div>
             </div>
 
@@ -188,7 +153,7 @@ const ProductDetail = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   disabled={!product.stock}
-                  // onClick={}
+                  onClick={handleclick}
                   className="flex-1 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center space-x-2"
                 >
                   <ShoppingBag className="h-5 w-5" />
