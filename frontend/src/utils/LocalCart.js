@@ -15,10 +15,15 @@ function writecart(items) {
     try {
         localStorage.setItem(CART_KEY, JSON.stringify(items));
     } catch (error) {
+
     }
+    try {
+        const totalItems = items.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
+        window.dispatchEvent(new CustomEvent('cart:updated', { detail: { items, totalItems } }));
+    } catch (e) { }
     return items;
 }
-
+    
 export function toCartItemFromProduct(product, quantity = 1) {
     const id = product._id;
     const name = product.name;

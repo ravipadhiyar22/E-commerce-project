@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu, X, Heart } from 'lucide-react';
 import useAuth from '../../context/Authcontext.jsx';
+import { readLocalCart } from "../../utils/LocalCart.js"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount] = useState(0);
+  const [cartCount, setcartCount] = useState(0);
   const navigate = useNavigate();
 
   const { user, loading } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // getting cart count
+  useEffect(() => {
+    const computeFromLocal = () => {
+      const items = readLocalCart();
+      setcartCount(items.length);
+    };
+
+    // initial load
+    computeFromLocal();
+
+    // live updates from any add/remove/quantity change
+    const onCartUpdated = (e) => {
+      if (e?.detail?.totalProducts != null) {
+        setcartCount(e.detail.totalProducts); // distinct products from event
+      } else {
+        computeFromLocal();
+      }
+    };
+
+    window.addEventListener('cart:updated', onCartUpdated);
+    return () => window.removeEventListener('cart:updated', onCartUpdated);
+  }, []);
+
 
   const handleSearch = (e) => {
     e.preventDefault();
