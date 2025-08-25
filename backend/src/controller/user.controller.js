@@ -17,7 +17,6 @@ const usersingup = async (req, res) => {
         const existinguser = await User.findOne({
             $or: [{ email }, { username }]
         })
-        // console.log("existing user", existinguser);
 
         if (existinguser) {
             return res.status(409).json({ message: "user alread exists please login" });
@@ -32,7 +31,6 @@ const usersingup = async (req, res) => {
 
         const userobj = userref.toObject();
         delete userobj.password;
-        // console.log("userobj", userobj);
         return res.status(201).json({ message: "user successfully created", user: userobj });
 
     } catch (error) {
@@ -101,7 +99,6 @@ const userlogin = async (req, res) => {
         //create user obj for send responce
         const userobj = user.toObject();
         delete userobj.password
-        // console.log("this is userobj", userobj);
 
 
         res.status(200)

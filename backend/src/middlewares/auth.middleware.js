@@ -13,8 +13,6 @@ export const verifyJWT = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET);
-        console.log("verify jwt decoded data", decoded);
-        console.log("varify jwt done");
         req.user = decoded;
         next();
 

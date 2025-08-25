@@ -6,7 +6,6 @@ import { v2 as claudinary } from "cloudinary";
 //-------------------------------add product---------------------------------------
 const addproduct = async (req, res) => {
     try {
-        console.log("app start");
         const {
             name,
             description,
@@ -29,7 +28,6 @@ const addproduct = async (req, res) => {
         //get image url from multer and upload in claudinary and get imageurl
         const productlocalimage = req.file.path
         const productimage = await uploadfile(productlocalimage);
-        console.log("this is product image", productimage.secure_url);
 
         //check if image urlnot exists
         if (!productimage) {
@@ -77,7 +75,6 @@ const deleteproduct = async (req, res) => {
             return res.status(400).json({ message: "product not find" });
         }
 
-        console.log("product from params:", product);
         //detete image from claudinary
         if (product?.image) {
             await claudinary.uploader.destroy(product.image);
@@ -121,7 +118,6 @@ const getproductcard = async (req, res) => {
     try {
 
         const product = await Product.find().lean().select("-description -notes -details");
-        // console.log("this is product card:", product);
 
         if (!product) {
             return res.status(401).json({ success: false, message: "can not get product" });
@@ -140,7 +136,6 @@ const getproductcard = async (req, res) => {
 const singleproduct = async (req, res) => {
     try {
         const { slug } = req.params;
-        // console.log("backend sulg",slug);
         const productdata = await Product.findOne({ slug });
 
         if (!productdata) {
