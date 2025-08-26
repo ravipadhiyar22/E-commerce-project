@@ -2,28 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Shield } from 'lucide-react';
 import { readLocalCart, removeLocalItem, setLocalQuantity } from "../../utils/LocalCart.js"
+import { loadservercart, updatecartservice, removeitemsfromcart } from "../../utils/ServerCart.js"
+import useAuth from '../../context/Authcontext.jsx';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const items = readLocalCart();
-    setCartItems(items)
-  }, [])
+    ; (async function getcart() {
+      try {
+        const items = await loadservercart(user);
+        setCartItems(items.items)
+      } catch (error) {
+        setCartItems(readLocalCart());
+      }
+    })();
+
+  }, [user]);
 
   const [promoCode, setPromoCode] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
 
 
-  const updateQuantity = (id, newQuantity) => {
-    const items = setLocalQuantity(id, newQuantity);
-    setCartItems(items);
+  const updateQuantity = async (id, newQuantity) => {
+    const items = await updatecartservice(id, newQuantity, user);
+    console.log("step:1-call-items updatecall:", items)
+    setCartItems(items.items);
   };
 
-  const removeItem = (id) => {
-    const data = removeLocalItem(id);
-    setCartItems(data);
+  const removeItem = async (id) => {
+    const data = await removeitemsfromcart(id, user);
+    setCartItems(data.items);
   };
+
 
   const applyPromoCode = () => {
     if (promoCode.toLowerCase() === 'luxe10') {

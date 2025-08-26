@@ -21,10 +21,11 @@ function writecart(items) {
         const totalItems = items.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
         window.dispatchEvent(new CustomEvent('cart:updated', { detail: { items, totalItems } }));
     } catch (e) { }
+    console.log("this is writecart items:", items);
     return items;
 }
-    
-export function toCartItemFromProduct(product, quantity = 1) {
+
+function toCartItemFromProduct(product, quantity = 1) {
     const id = product._id;
     const name = product.name;
     const price = product.price;
@@ -45,12 +46,12 @@ export function toCartItemFromProduct(product, quantity = 1) {
     };
 }
 
-export function readLocalCart() {
+function readLocalCart() {
     return readcart();
 }
 
 
-export function addLocalItem(product, quantity = 1) {
+function addLocalItem(product, quantity = 1) {
     const items = readcart();
     const newitem = toCartItemFromProduct(product, quantity);
 
@@ -72,7 +73,7 @@ export function addLocalItem(product, quantity = 1) {
     return writecart(items);
 }
 
-export function setLocalQuantity(id, quantity) {
+function setLocalQuantity(id, quantity) {
     const items = readcart();
 
     const newitems = items.map(item => {
@@ -82,11 +83,11 @@ export function setLocalQuantity(id, quantity) {
 
         return { ...item, quantity: qty };
     }).filter(i => i.quantity > 0);
-
+    console.log("step 3 -call updatae local set :");
     return writecart(newitems);
 }
 
-export function removeLocalItem(id) {
+function removeLocalItem(id) {
     const items = readcart();
 
     const newitems = items.filter(data => data.id !== id);
@@ -95,6 +96,8 @@ export function removeLocalItem(id) {
 }
 
 
-export function clearLocalCart() {
+function clearLocalCart() {
     return writecart([]);
 }
+
+export { readLocalCart, addLocalItem, setLocalQuantity, removeLocalItem, clearLocalCart, toCartItemFromProduct }

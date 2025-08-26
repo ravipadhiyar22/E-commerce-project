@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import api from '../../api/axios';
 import useAuth from '../../context/Authcontext';
+import { mergeLocalToServerOnLogin } from '../../utils/ServerCart';
 
 const Login = () => {
 
@@ -26,7 +27,7 @@ const Login = () => {
 
       const res = await api.get("/users/me");
       setuser(res.data.user);
-
+      await mergeLocalToServerOnLogin()
       navigate("/")
     } catch (error) {
       setError(error.response?.data?.message || "login failed")

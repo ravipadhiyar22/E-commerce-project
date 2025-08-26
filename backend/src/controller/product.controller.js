@@ -77,7 +77,7 @@ const deleteproduct = async (req, res) => {
 
         //detete image from claudinary
         if (product?.image) {
-            await claudinary.uploader.destroy(product.image);
+            await claudinary.uploader.destroy(product.image_public_id);
         }
 
         //delete data from database

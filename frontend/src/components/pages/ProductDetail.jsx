@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api/axios.js';
 import { useParams, Link } from 'react-router-dom';
 import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus, CloudCog } from 'lucide-react';
-import { setLocalQuantity, addLocalItem, toCartItemFromProduct } from "../../utils/LocalCart.js"
+import { setLocalQuantity, addLocalItem } from "../../utils/LocalCart.js"
+import useAuth from '../../context/Authcontext.jsx';
+import { addtocartservice } from "../../utils/ServerCart.js"
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [product, setproduct] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
 
@@ -26,8 +29,15 @@ const ProductDetail = () => {
 
   }, [slug]);
 
-  function handleclick() {
-    addLocalItem(product, quantity);
+  async function handleclick() {
+    try {
+      await addtocartservice(product, quantity, user);
+    } catch (error) {
+      console.log('Add to cart failed:', error);
+
+      // fallback for any error: still add locally
+      addLocalItem(product, quantity);
+    }
   }
 
 
