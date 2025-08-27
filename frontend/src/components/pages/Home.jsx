@@ -24,17 +24,17 @@ const Home = () => {
   const categories = [
     {
       name: "For Her",
-      image: "https://images.pexels.com/photos/1191536/pexels-photo-1191536.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://res.cloudinary.com/ravipadhiyar/image/upload/v1756319013/WhatsApp_Image_2025-08-27_at_23.50.23_fc5b094a_coryrj.jpg",
       value: "women"
     },
     {
       name: "For Him",
-      image: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://res.cloudinary.com/ravipadhiyar/image/upload/v1756319025/WhatsApp_Image_2025-08-27_at_23.41.35_f0ff2728_wzjhbq.jpg",
       value: "male"
     },
     {
       name: "Unisex",
-      image: "https://images.pexels.com/photos/1070049/pexels-photo-1070049.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://res.cloudinary.com/ravipadhiyar/image/upload/v1756318998/WhatsApp_Image_2025-08-27_at_23.49.59_86b1546d_sitby8.jpg",
       value: "unisex"
     }
   ];
@@ -124,7 +124,7 @@ const Home = () => {
                   <img
                     src={category.image}
                     alt={category.name}
-                    className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-80 object-center  group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 text-white">

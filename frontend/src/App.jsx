@@ -15,6 +15,9 @@ import Profile from "./components/pages/Profile.jsx";
 import AdminPanel from "./components/pages/AdminPanel.jsx";
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ScrollToTop from './components/pages/ScrollToTop.jsx';
+import AdminDashbord from './components/admin/AdminDashbord.jsx';
+import Adminproduct from "./components/admin/Products.jsx"
+import Addproduct from './components/admin/Addproduct.jsx';
 
 
 
@@ -52,7 +55,13 @@ function App() {
               <ProtectedRoute requiredrole="admin">
                 <AdminPanel />
               </ProtectedRoute>
-            } />
+            } >
+              <Route index element={<AdminDashbord />} />
+              <Route path='products' element={<Adminproduct />} />
+              <Route path='addproduct' element={<Addproduct />} />
+              {/* <Route path='products/:id' element={ } /> */}
+            </Route>
+
           </Routes>
         </main>
         <Footer />
