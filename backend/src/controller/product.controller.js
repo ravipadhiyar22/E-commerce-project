@@ -60,6 +60,57 @@ const addproduct = async (req, res) => {
     }
 }
 
+//-------------------------------update prouduct---------------------------------------------
+const updateproduct = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "product not found" });
+        }
+
+        const notes = req.body?.notes ? JSON.parse(req.body.notes) : {};
+        const details = req.body?.details ? JSON.parse(req.body.details) : {};
+        const data = ["name", "price", "selling_price", "description", "stock", "category"];
+
+        for (const fields of data) {
+            console.log("fielsd:", req.body[fields]);
+            if (req.body[fields] !== undefined && req.body[fields] !== "") {
+                product[fields] = req.body[fields];
+            }
+        }
+        if (notes !== undefined && notes !== "") {
+            product.notes = notes;
+        }
+
+        if (details !== undefined && details !== "") {
+            product.details = details;
+        }
+
+        const image = req?.file?.path;
+        console.log('image', image);
+        if (image !== undefined && image !== "") {
+            await claudinary.uploader.destroy(product.image_public_id);
+            const newimage = await uploadfile(image);
+            if (!newimage) {
+                return res.status(404).json({ success: false, message: "coudinary image not provided" })
+            }
+            product.image = newimage.secure_url;
+            product.image_public_id = newimage.public_id;
+        }
+
+        await product.save();
+
+        return res.status(200).json({ success: true, message: "product update success fully" });
+
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "server error while update product" });
+    }
+}
+
+
 //-------------------------------deleteproduct product---------------------------------------
 
 const deleteproduct = async (req, res) => {
@@ -81,9 +132,9 @@ const deleteproduct = async (req, res) => {
         }
 
         //delete data from database
-        await Product.findOneAndDelete(id);
+        await Product.findOneAndDelete({ _id: id });
 
-        return res.status(200).json({ message: "product deleted successfully" });
+        return res.status(200).json({ message: "product deleted successfully", product });
 
 
     } catch (error) {
@@ -151,4 +202,4 @@ const singleproduct = async (req, res) => {
 }
 
 
-export { addproduct, deleteproduct, getallproduct, getproductcard, singleproduct };
+export { addproduct, deleteproduct, getallproduct, getproductcard, singleproduct, updateproduct };

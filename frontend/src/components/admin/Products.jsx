@@ -7,6 +7,7 @@ export default function ProductsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const [deleteload, setdeleteload] = useState(false);
     async function fetchProducts() {
         setLoading(true);
         setError("");
@@ -31,9 +32,12 @@ export default function ProductsPage() {
         const ok = window.confirm("Are you sure you want to delete this product?")
         if (!ok) return;
         try {
-            const res = await api.delete(`/products/deleteproduct/${id}`);
-            setpopup(res.data.message);
+            setdeleteload(true);
             setshowpopup(true);
+            setpopup("loading...")
+            const res = await api.delete(`/products/deleteproduct/${id}`);
+            setdeleteload(false);
+            setpopup(res.data.message);
             setTimeout(() => {
                 setshowpopup(false);
             }, 3000);
@@ -87,7 +91,7 @@ export default function ProductsPage() {
                                     <td className="p-2">${p.selling_price ?? p.price}</td>
                                     <td className="p-2">{p.stock}</td>
                                     <td className="p-2 flex gap-2">
-                                        <Link to={`/admin/products/${p._id}/edit`} className="px-2 py-1 rounded bg-amber-500 text-white">Edit</Link>
+                                        <Link to={`/admin/products/update/${p._id}`} className="px-2 py-1 rounded bg-amber-500 text-white">Edit</Link>
                                         <button onClick={() => handleDelete(p._id)} className="px-2 py-1 rounded bg-red-600 text-white">Delete</button>
                                     </td>
                                 </tr>

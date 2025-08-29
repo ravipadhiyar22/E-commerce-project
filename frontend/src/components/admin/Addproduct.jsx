@@ -1,174 +1,3 @@
-// import React, { useState } from 'react'
-// import api from '../../api/axios'
-
-// function Addproduct() {
-
-//     const [formdata, setformdata] = useState({
-//         name: "",
-//         description: "",
-//         price: "",
-//         selling_price: "",
-//         stock: 0,
-//         category: "",
-//         image: "",
-//     })
-
-//     const [notes, setnotes] = useState({
-//         top: "",
-//         middle: "",
-//         base: ""
-//     })
-
-//     const [details, setdetails] = useState({
-//         sizeMl: "",
-//         concentration: "",
-//         longevity: "",
-//         sillage: "",
-//         season: "",
-//         occasion: ""
-//     })
-
-//     function handleformdata(e) {
-//         const { id, value } = e.target
-//         setformdata((prev) => ({ ...prev, [id]: value }))
-//     }
-
-//     function handlenotechange(type, value) {
-//         setnotes({ ...notes, [type]: value })
-//     }
-
-//     function notesconvert() {
-//         const finalnotes = {
-//             top: notes.top.split(",").map(n => n.trim()).filter(n => n),
-//             middle: notes.middle.split(",").map(n => n.trim()).filter(n => n),
-//             base: notes.base.split(",").map(n => n.trim()).filter(n => n)
-//         }
-//         return finalnotes;
-//     }
-
-
-
-//     function handledetailschange(type, value) {
-//         setdetails({ ...details, [type]: value })
-//     }
-
-//     function handlesubmin(e) {
-//         e.preventDefault()
-//         const data = new FormData();
-
-//         data.append("name", formdata.name);
-//         data.append("description", formdata.description);
-//         data.append("price", formdata.price);
-//         data.append("selling_price", formdata.selling_price);
-//         data.append("stock", formdata.stock);
-//         data.append("category", formdata.category);
-//         data.append("image", formdata.image);
-//         data.append("notes", JSON.stringify(notesconvert()));
-//         data.append("details", JSON.stringify(details));
-
-//         try {
-//             api.post("/products/addproduct", data, {
-//                 headers: { "Content-Type": "multipart/form-data" },
-//             })
-//         } catch (error) {
-//             console.error("Error adding product:", error);
-//         }
-
-//     }
-//     return (
-//         <div>
-//             <form action="" onSubmit={handlesubmin}>
-
-//                 <input
-//                     type="text"
-//                     id='name'
-//                     required
-//                     value={formdata.name}
-//                     onChange={handleformdata}
-//                     placeholder='enter product name'
-//                 />
-//                 <textarea
-//                     name="description"
-//                     id="description"
-//                     value={formdata.description}
-//                     onChange={handleformdata}
-//                     placeholder='enter product descriptin'
-//                     required
-//                 />
-//                 <input
-//                     type="number"
-//                     id='price'
-//                     value={formdata.price}
-//                     onChange={handleformdata}
-//                     placeholder='price'
-//                     required
-//                 />
-//                 <input
-//                     type="number"
-//                     id='selling_price'
-//                     value={formdata.selling_price}
-//                     onChange={handleformdata}
-//                     placeholder='selling price'
-//                     required
-//                 />
-//                 <input
-//                     type="file"
-//                     id='image'
-//                     accept='image/*'
-//                     onChange={(e) => setformdata({ ...formdata, image: e.target.files[0] })}
-//                     placeholder='product image'
-//                     required
-//                 />
-//                 <input
-//                     type="number"
-//                     id='stock'
-
-//                     value={formdata.stock}
-//                     onChange={handleformdata}
-//                     placeholder='product stock'
-//                     required
-//                 />
-
-//                 {["top", "middle", "base"].map((items) => (
-//                     <div key={items}>
-//                         <label className="font-bold capitalize">
-//                             {items} Notes:
-//                         </label>
-
-//                         <input
-//                             type="text"
-//                             placeholder={`enter ${items} notes (comma separated)`}
-//                             value={notes[items]}
-//                             onChange={(e) => handlenotechange(items, e.target.value)}
-//                         />
-//                     </div>
-//                 ))}
-
-//                 {Object.keys(details).map((items) => (
-//                     <div key={items}>
-//                         <input
-//                             type="text"
-//                             placeholder={`enter perfume ${items}`}
-//                             value={details[items]}
-//                             onChange={(e) => (handledetailschange(items, e.target.value))}
-//                         />
-//                     </div>
-//                 ))}
-
-//                 <select name="category" id="category" value={formdata.category} onChange={handleformdata}>
-//                     <option value="male">male</option>
-//                     <option value="woman">woman</option>
-//                     <option value="unisex">unisex</option>
-//                 </select>
-
-//                 <button type='submit'>add product</button>
-
-//             </form>
-//         </div>
-//     )
-// }
-
-// export default Addproduct
 import React, { useState } from "react";
 import api from "../../api/axios";
 import { useNavigate } from "react-router-dom";
@@ -223,8 +52,9 @@ function Addproduct() {
         setdetails({ ...details, [type]: value });
     }
 
-    function handlesubmin(e) {
+    async function handlesubmin(e) {
         e.preventDefault();
+        e.stopPropagation();
         const data = new FormData();
 
         data.append("name", formdata.name);
@@ -238,7 +68,7 @@ function Addproduct() {
         data.append("details", JSON.stringify(details));
 
         try {
-            api.post("/products/addproduct", data, {
+            await api.post("/products/addproduct", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert("✅ Product added successfully!");

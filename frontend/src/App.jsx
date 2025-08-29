@@ -18,7 +18,7 @@ import ScrollToTop from './components/pages/ScrollToTop.jsx';
 import AdminDashbord from './components/admin/AdminDashbord.jsx';
 import Adminproduct from "./components/admin/Products.jsx"
 import Addproduct from './components/admin/Addproduct.jsx';
-
+import Updateproduct from "./components/admin/Updateproduct.jsx"
 
 
 
@@ -59,7 +59,7 @@ function App() {
               <Route index element={<AdminDashbord />} />
               <Route path='products' element={<Adminproduct />} />
               <Route path='addproduct' element={<Addproduct />} />
-              {/* <Route path='products/:id' element={ } /> */}
+              <Route path='products/update/:id' element={<Updateproduct />} />
             </Route>
 
           </Routes>
