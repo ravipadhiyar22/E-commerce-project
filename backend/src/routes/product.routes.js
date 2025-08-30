@@ -1,7 +1,15 @@
 import express from "express"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
-import { addproduct, deleteproduct, getallproduct, getproductcard, singleproduct, updateproduct } from "../controller/product.controller.js"
+import {
+    addproduct,
+    deleteproduct,
+    getallproduct,
+    getproductcard,
+    singleproduct,
+    updateproduct,
+    searchproduct
+} from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
 const router = express.Router()
 
@@ -9,7 +17,9 @@ const router = express.Router()
 router.get("/allproduct", getallproduct);
 router.get("/productcard", getproductcard);
 
+router.get("/search", searchproduct);
 router.get("/:slug", singleproduct);
+
 
 //protected routes
 

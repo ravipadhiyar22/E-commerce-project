@@ -188,7 +188,7 @@ const singleproduct = async (req, res) => {
     try {
         const { slug } = req.params;
         const productdata = await Product.findOne({ slug });
-
+        console.log("this route call");
         if (!productdata) {
             return res.status(401).json({ success: false, message: "can not find prouct" });
         }
@@ -201,5 +201,48 @@ const singleproduct = async (req, res) => {
     }
 }
 
+//--------------------------------search product -------------------------------------------
 
-export { addproduct, deleteproduct, getallproduct, getproductcard, singleproduct, updateproduct };
+const searchproduct = async (req, res) => {
+    try {
+        console.log("search start");
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ success: false, message: "please provide proper name" });
+        }
+        console.log("query", query);
+        const product = await Product.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { notes: { $regex: query, $options: 'i' } },
+                { details: { $regex: query, $options: 'i' } },
+                { category: { $regex: query, $options: 'i' } }
+            ]
+        })
+
+        if (!product) {
+            return res.status(400).json({ success: false, message: "product not found" });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "product find successfully",
+            product
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "internal server error while find product" });
+    }
+}
+
+export {
+    addproduct,
+    deleteproduct,
+    getallproduct,
+    getproductcard,
+    singleproduct,
+    updateproduct,
+    searchproduct
+};

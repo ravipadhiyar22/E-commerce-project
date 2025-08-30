@@ -20,6 +20,7 @@ import Adminproduct from "./components/admin/Products.jsx"
 import Addproduct from './components/admin/Addproduct.jsx';
 import Updateproduct from "./components/admin/Updateproduct.jsx"
 import Wishlist from "./components/pages/Wishlist.jsx";
+import Searchpage from './components/pages/Searchpage.jsx';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
+            <Route path='/products/search' element={<Searchpage />} exact />
             <Route path="/products/:slug" element={<ProductDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

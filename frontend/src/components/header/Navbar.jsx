@@ -39,10 +39,13 @@ const Navbar = () => {
   }, [user, cartCount]);
 
 
-  const handleSearch = (e) => {
+  const [searchtext, setsearchtext] = useState("");
+  const handleSearch = async (e) => {
     e.preventDefault();
-    // Handle search functionality
-    navigate('/products');
+    if (searchtext.trim()) {
+      navigate(`/products/search?query=${searchtext}`);
+    }
+
   };
 
   return (
@@ -80,6 +83,8 @@ const Navbar = () => {
             <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
+                value={searchtext}
+                onChange={(e) => setsearchtext(e.target.value)}
                 placeholder="Search fragrances..."
                 className="w-full px-4 py-2 pl-10 bg-gray-100 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               />
@@ -90,9 +95,9 @@ const Navbar = () => {
           {/* Right Side Icons */}
           <div className="flex items-center space-x-4">
             {/* Mobile Search */}
-            <button className="lg:hidden p-2 text-gray-600 hover:text-purple-600 transition-colors duration-200">
+            {/* <button className="lg:hidden p-2 text-gray-600 hover:text-purple-600 transition-colors duration-200">
               <Search className="h-6 w-6" />
-            </button>
+            </button> */}
 
             {/* Wishlist */}
             <Link to="/wishlist" className="text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200">
