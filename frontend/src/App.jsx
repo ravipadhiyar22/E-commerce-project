@@ -19,7 +19,7 @@ import AdminDashbord from './components/admin/AdminDashbord.jsx';
 import Adminproduct from "./components/admin/Products.jsx"
 import Addproduct from './components/admin/Addproduct.jsx';
 import Updateproduct from "./components/admin/Updateproduct.jsx"
-
+import Wishlist from "./components/pages/Wishlist.jsx";
 
 
 function App() {
@@ -42,6 +42,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/cart" element={<Cart />} />
 
+            <Route path="/wishlist" element={<Wishlist />} />
             {/* protected routes */}
             <Route path="/profile" element={
               <ProtectedRoute>

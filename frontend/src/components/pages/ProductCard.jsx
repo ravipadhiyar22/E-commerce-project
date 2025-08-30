@@ -2,9 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from "../../api/axios.js"
 import { Star, Filter, Grid, List, ShoppingBag, Heart, CloudCog } from 'lucide-react';
+import useAuth from '../../context/Authcontext.jsx';
+import { loadWishlist, toggleWishlistService } from '../../utils/wishlistService.js';
 
 
 function ProductCard({ product, viewMode }) {
+    const { user } = useAuth();
+    const [wishIds, setWishIds] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const { ids } = await loadWishlist(user);
+                setWishIds(ids);
+            } catch (e) { }
+        })();
+    }, [user]);
+
     return (
         <div>
             <div
@@ -34,8 +48,19 @@ function ProductCard({ product, viewMode }) {
                     </div>
 
                     {/* Wishlist */}
-                    <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-50 hover:text-red-500 transition-colors duration-200">
-                        <Heart className="h-4 w-4" />
+                    <button
+                        type="button"
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            try {
+                                const { ids } = await toggleWishlistService(product, user);
+                                setWishIds(ids);
+                            } catch (e2) { }
+                        }}
+                        className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-50 hover:text-red-500 transition-colors duration-200"
+                    >
+                        <Heart className={`h-4 w-4 ${wishIds.includes(String(product._id || product.id || product.slug)) ? 'text-red-500' : ''}`} />
                     </button>
                 </div>
 

@@ -5,6 +5,7 @@ import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus
 import { setLocalQuantity, addLocalItem } from "../../utils/LocalCart.js"
 import useAuth from '../../context/Authcontext.jsx';
 import { addtocartservice } from "../../utils/ServerCart.js"
+import { loadWishlist, toggleWishlistService } from '../../utils/wishlistService.js';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -12,6 +13,7 @@ const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState('description');
   const [product, setproduct] = useState([]);
   const { user } = useAuth();
+  const [wishIds, setWishIds] = useState([]);
 
   useEffect(() => {
 
@@ -28,6 +30,17 @@ const ProductDetail = () => {
     })();
 
   }, [slug]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { ids } = await loadWishlist(user);
+        setWishIds(ids);
+      } catch (e) {
+        // ignore
+      }
+    })();
+  }, [user]);
 
   async function handleclick() {
     try {
@@ -170,8 +183,17 @@ const ProductDetail = () => {
                   <span>Add to Cart</span>
                 </button>
 
-                <button className="px-6 py-4 border-2 border-gray-300 rounded-xl font-semibold hover:border-purple-500 hover:text-purple-600 transition-all duration-200 flex items-center justify-center space-x-2">
-                  <Heart className="h-5 w-5" />
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const { ids } = await toggleWishlistService(product, user);
+                      setWishIds(ids);
+                    } catch (e) { }
+                  }}
+                  className="px-6 py-4 border-2 border-gray-300 rounded-xl font-semibold hover:border-purple-500 hover:text-purple-600 transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  <Heart className={`h-5 w-5 ${wishIds.includes(String(product._id || product.id || product.slug)) ? 'text-red-500' : ''}`} />
                   <span className="hidden sm:inline">Wishlist</span>
                 </button>
 

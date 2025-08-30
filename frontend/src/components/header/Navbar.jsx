@@ -95,10 +95,9 @@ const Navbar = () => {
             </button>
 
             {/* Wishlist */}
-            <button className="hidden sm:block p-2 text-gray-600 hover:text-purple-600 transition-colors duration-200">
-              <Heart className="h-6 w-6" />
-            </button>
-
+            <Link to="/wishlist" className="text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200">
+              Wishlist
+            </Link>
             {/* User Account */}
             {/* <Link to="/login" className="hidden sm:block p-2 text-gray-600 hover:text-purple-600 transition-colors duration-200">
               <User className="h-6 w-6" />
