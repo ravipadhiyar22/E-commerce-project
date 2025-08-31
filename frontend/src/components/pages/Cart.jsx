@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Shield } from 'lucide-react';
 import { readLocalCart, removeLocalItem, setLocalQuantity } from "../../utils/LocalCart.js"
 import { loadservercart, updatecartservice, removeitemsfromcart } from "../../utils/ServerCart.js"
 import useAuth from '../../context/Authcontext.jsx';
+import Loader from '../Loader.jsx';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const { user } = useAuth();
 
+  const [loadingstate, setloading] = useState(false);
   useEffect(() => {
     ; (async function getcart() {
       try {
+        setloading(true);
         const items = await loadservercart(user);
+        setloading(false);
         setCartItems(items.items)
       } catch (error) {
         setCartItems(readLocalCart());
@@ -75,6 +79,12 @@ const Cart = () => {
   ];
 
   //if cart is empty than disply shop now
+
+  if (loadingstate) {
+    return (
+      <Loader />
+    )
+  }
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12">
@@ -97,6 +107,7 @@ const Cart = () => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

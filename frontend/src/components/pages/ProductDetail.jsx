@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axios.js';
 import { useParams, Link } from 'react-router-dom';
-import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus, CloudCog } from 'lucide-react';
+import { Star, ShoppingBag, Heart, Share2, Truck, Shield, RotateCcw, Plus, Minus } from 'lucide-react';
 import { setLocalQuantity, addLocalItem } from "../../utils/LocalCart.js"
 import useAuth from '../../context/Authcontext.jsx';
 import { addtocartservice } from "../../utils/ServerCart.js"

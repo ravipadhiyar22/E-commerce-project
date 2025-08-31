@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShoppingBag, Truck, Shield, HeartHandshake, Sparkles } from 'lucide-react';
+import { Star, ShoppingBag } from 'lucide-react';
 
 
 function FeatureProductcart({ product }) {

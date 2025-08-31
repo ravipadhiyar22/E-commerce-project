@@ -1,6 +1,6 @@
-import React, { useEffect, useState,useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, User, Menu, X, Heart, CloudCog } from 'lucide-react';
+import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
 import useAuth from '../../context/Authcontext.jsx';
 import { loadservercart } from "../../utils/ServerCart.js"
 import api from '../../api/axios.js';

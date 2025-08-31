@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShoppingBag, Truck, Shield, HeartHandshake, Sparkles, CloudCog } from 'lucide-react';
+import { Truck, Shield, HeartHandshake, Sparkles } from 'lucide-react';
 import api from '../../api/axios';
 import FeatureProductcart from "./FeatureProductcart"
 

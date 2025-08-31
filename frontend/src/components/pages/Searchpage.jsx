@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from "../../api/axios.js"
-import { Star, Filter, Grid, List, ShoppingBag, Heart, CloudCog } from 'lucide-react';
+import { Filter, Grid, List } from 'lucide-react';
 import ProductCard from './ProductCard.jsx';
 
 function Searchpage() {

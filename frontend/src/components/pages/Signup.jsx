@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Check } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from 'lucide-react';
 import api from '../../api/axios';
 
 const Signup = () => {

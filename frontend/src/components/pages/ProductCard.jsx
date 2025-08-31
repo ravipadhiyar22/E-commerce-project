@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from "../../api/axios.js"
-import { Star, Filter, Grid, List, ShoppingBag, Heart, CloudCog } from 'lucide-react';
+import { Star, ShoppingBag, Heart } from 'lucide-react';
 import useAuth from '../../context/Authcontext.jsx';
 import { loadWishlist, toggleWishlistService } from '../../utils/wishlistService.js';
 

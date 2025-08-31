@@ -1,6 +1,4 @@
 import React from "react";
-import Addproduct from "../admin/Addproduct";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Outlet, Link, NavLink } from "react-router-dom";
 
 export default function AdminPanel() {

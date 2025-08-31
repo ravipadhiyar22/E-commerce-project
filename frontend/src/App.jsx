@@ -21,6 +21,7 @@ import Addproduct from './components/admin/Addproduct.jsx';
 import Updateproduct from "./components/admin/Updateproduct.jsx"
 import Wishlist from "./components/pages/Wishlist.jsx";
 import Searchpage from './components/pages/Searchpage.jsx';
+import Loader from './components/Loader.jsx';
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/cart" element={<Cart />} />
-
+            <Route path='/loader' element={<Loader />} />
             <Route path="/wishlist" element={<Wishlist />} />
             {/* protected routes */}
             <Route path="/profile" element={
