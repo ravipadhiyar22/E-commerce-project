@@ -237,6 +237,37 @@ const searchproduct = async (req, res) => {
     }
 }
 
+const findname = async (req, res) => {
+    try {
+        console.log("search start");
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ success: false, message: "please provide proper name" });
+        }
+        console.log("query", query);
+        const product = await Product.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+            ]
+        }).select("name -_id")
+            .limit(5)
+            .lean();
+
+        if (!product) {
+            return res.status(400).json({ success: false, message: "product not found" });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "product find successfully",
+            product
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "internal server error while find product" });
+    }
+}
 export {
     addproduct,
     deleteproduct,
@@ -244,5 +275,6 @@ export {
     getproductcard,
     singleproduct,
     updateproduct,
-    searchproduct
+    searchproduct,
+    findname
 };

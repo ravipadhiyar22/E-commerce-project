@@ -8,7 +8,8 @@ import {
     getproductcard,
     singleproduct,
     updateproduct,
-    searchproduct
+    searchproduct,
+    findname
 } from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
 const router = express.Router()
@@ -16,7 +17,7 @@ const router = express.Router()
 
 router.get("/allproduct", getallproduct);
 router.get("/productcard", getproductcard);
-
+router.get("/findname", findname);
 router.get("/search", searchproduct);
 router.get("/:slug", singleproduct);
 

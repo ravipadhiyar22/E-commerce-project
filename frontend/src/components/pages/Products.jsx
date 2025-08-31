@@ -10,7 +10,6 @@ const Products = () => {
   const initialcategory = searchparams.get("category") || "all";
 
   const [viewMode, setViewMode] = useState('grid');
-  const [sortBy, setSortBy] = useState('featured');
   const [selectedCategory, setSelectedCategory] = useState(initialcategory);
   const [priceRange, setPriceRange] = useState([0, 5000]);
 
@@ -126,19 +125,7 @@ const Products = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  {/*----------------------- Sort -----------------------*/}
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    <option value="featured">Featured</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="rating">Rating</option>
-                    <option value="newest">Newest</option>
-                  </select>
-
+                 
                   {/* -----------------------View Mode----------------------- */}
                   <div className="flex border border-gray-300 rounded-lg overflow-hidden">
                     <button
@@ -161,7 +148,7 @@ const Products = () => {
             {/*----------------------- Products Grid -----------------------*/}
             <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-6`}>
               {filteredProducts.map((product) =>
-                <ProductCard product={product} viewMode={viewMode} />
+                <ProductCard key={product._id} product={product} viewMode={viewMode} />
               )}
             </div>
 

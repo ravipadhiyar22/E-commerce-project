@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu, X, Heart, CloudCog } from 'lucide-react';
 import useAuth from '../../context/Authcontext.jsx';
 import { loadservercart } from "../../utils/ServerCart.js"
+import api from '../../api/axios.js';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  console.log("user:", user)
+  // console.log("user:", user)
   // getting cart count
   useEffect(() => {
     const computeFromLocal = async () => {
@@ -40,6 +41,45 @@ const Navbar = () => {
 
 
   const [searchtext, setsearchtext] = useState("");
+
+  const debounce = (fn, delay) => {
+    let timer;
+    return (...arg) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn(...arg);
+      }, delay);
+    }
+  }
+
+  async function fetchnames(query) {
+    try {
+      const data = await api.get(`/products/findname?query=${query}`);
+      console.log("name", data.data.product)
+    } catch (error) {
+      console.log('error whiel fetch name ', error);
+    }
+  }
+
+  const handledebounce = useCallback(
+    debounce((val) => {
+      fetchnames(val);
+    }, 2000),
+    [] // stable reference
+  );
+
+  // const handledebounce = debounce((e) => {
+  //   fetchnames(e);
+  // }, 2000);
+
+  const onsearchchange = (e) => {
+    const val = e.target.value;
+    setsearchtext(e.target.value);
+    if (val.trim()) {
+      handledebounce(val);
+    }
+  }
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchtext.trim()) {
@@ -84,7 +124,7 @@ const Navbar = () => {
               <input
                 type="text"
                 value={searchtext}
-                onChange={(e) => setsearchtext(e.target.value)}
+                onChange={onsearchchange}
                 placeholder="Search fragrances..."
                 className="w-full px-4 py-2 pl-10 bg-gray-100 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               />

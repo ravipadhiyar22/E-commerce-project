@@ -17,7 +17,10 @@ function Searchpage() {
 
     const [products, setproducts] = useState([]);
     useEffect(() => {
-
+        if (!query) {
+            setproducts([]);
+            return;
+        }
         ; (async () => {
             try {
 
