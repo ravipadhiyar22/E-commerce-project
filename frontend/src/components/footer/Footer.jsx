@@ -130,7 +130,7 @@ const Footer = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-gradient-to-r from-purple-600 to-amber-500 rounded-r-lg hover:from-purple-700 hover:to-amber-600 transition-all duration-200 font-medium"
+                                    className="px-1 py-2 bg-gradient-to-r from-purple-600 to-amber-500 rounded-r-lg hover:from-purple-700 hover:to-amber-600 transition-all duration-200 font-medium"
                                 >
                                     Subscribe
                                 </button>
