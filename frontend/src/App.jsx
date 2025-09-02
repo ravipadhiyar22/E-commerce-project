@@ -22,7 +22,8 @@ import Updateproduct from "./components/admin/Updateproduct.jsx"
 import Wishlist from "./components/pages/Wishlist.jsx";
 import Searchpage from './components/pages/Searchpage.jsx';
 import Loader from './components/Loader.jsx';
-
+import Address from './components/pages/checkout/Address.jsx';
+import { Cartcontext } from './context/Cartcontext.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -43,9 +44,15 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/cart" element={
+              <Cartcontext>
+                <Cart />
+              </Cartcontext>
+            } />
             <Route path='/loader' element={<Loader />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path='/address' element={<Address />} />
+
             {/* protected routes */}
             <Route path="/profile" element={
               <ProtectedRoute>
