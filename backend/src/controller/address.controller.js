@@ -48,15 +48,17 @@ const getaddress = async (req, res) => {
     }
 }
 
-const deleteaddress=async (req,res)=>{
+const deleteaddress = async (req, res) => {
     try {
-        const {id}=req.params;
+        const { id } = req.params;
 
-        const address=await Address.findOne({})
+        const deleted = await Address.findByIdAndDelete(id);
+
+        return res.status(200).json({ success: true, message: "address deleted successfully", deleted });
 
     } catch (error) {
-        
+        return res.status(400).json({ success: false, message: "error while delete address", error })
     }
 }
 
-export { addaddress, getaddress };
+export { addaddress, getaddress,deleteaddress };
