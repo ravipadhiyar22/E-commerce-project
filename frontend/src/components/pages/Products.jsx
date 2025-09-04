@@ -19,8 +19,8 @@ const Products = () => {
     ; (async () => {
       try {
 
-        const resdata = await api.get("/products/productcard");
-        setproducts(resdata.data.product);
+        const res = await api.get("/products/productcard");
+        setproducts(res.data.product);
 
       } catch (error) {
         console.log("erroe while fetch the productcard", error);

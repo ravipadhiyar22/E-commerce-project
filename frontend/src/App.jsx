@@ -51,7 +51,12 @@ function App() {
             } />
             <Route path='/loader' element={<Loader />} />
             <Route path="/wishlist" element={<Wishlist />} />
-            <Route path='/address' element={<Address />} />
+            <Route path='/address' element={
+              <Cartcontext>
+                <Address />
+              </Cartcontext>
+
+            } />
 
             {/* protected routes */}
             <Route path="/profile" element={

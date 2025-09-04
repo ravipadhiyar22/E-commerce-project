@@ -186,7 +186,7 @@ const Cart = () => {
           {/* Order Summary */}
           <div className="space-y-6">
             {/* Promo Code */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            {/* <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Promo Code</h3>
               <div className="flex gap-3">
                 <input
@@ -206,7 +206,7 @@ const Cart = () => {
               {isPromoApplied && (
                 <p className="text-sm text-green-600 mt-2">✓ LUXE10 applied - 10% off!</p>
               )}
-            </div>
+            </div> */}
 
             {/* Order Summary */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -252,10 +252,10 @@ const Cart = () => {
                 </div>
               </div>
 
-              <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg">
+              <Link className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg" to="/address">
                 <span>Proceed to Checkout</span>
                 <ArrowRight className="h-5 w-5" />
-              </button>
+              </Link>
 
               <div className="mt-4 text-center">
                 <Link

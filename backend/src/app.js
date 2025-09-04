@@ -23,14 +23,23 @@ import product from "./routes/product.routes.js"
 import wishlistRouter from "./routes/wishlist.routes.js"
 import cartrouter from "./routes/cart.routes.js"
 import address from "./routes/checkout.routes.js"
+
 //declare routes
+
+//authentication route
 app.use("/api/users", userRouter);
 
+//admin product manage route
 app.use("/api/products", product);
+
+//user whishlist  route
 app.use("/api/wishlist", wishlistRouter);
 
+
+//user cart rotute
 app.use("/api/cart", cartrouter);
 
+//user checkout route
 app.use("/api/checkout", address);
 export { app };
 
