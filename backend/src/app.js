@@ -23,7 +23,7 @@ import product from "./routes/product.routes.js"
 import wishlistRouter from "./routes/wishlist.routes.js"
 import cartrouter from "./routes/cart.routes.js"
 import address from "./routes/checkout.routes.js"
-
+import order from "./routes/order.routes.js"
 //declare routes
 
 //authentication route
@@ -41,5 +41,7 @@ app.use("/api/cart", cartrouter);
 
 //user checkout route
 app.use("/api/checkout", address);
+
+app.use("/api/checkout", order);
 export { app };
 
