@@ -37,7 +37,7 @@ export function Authcontextprovider({ children }) {
         const intercept = api.interceptors.response.use(
             response => response,
             async error => {
-                const originalrequest = error.config;0
+                const originalrequest = error.config;
 
                 if (error.response?.status === 403 && error.response?.data?.message === 'unauthorized') {
                     try {
@@ -55,7 +55,7 @@ export function Authcontextprovider({ children }) {
         return () => {
             api.interceptors.response.eject(intercept);
         }
-        
+
     }, [])
 
 

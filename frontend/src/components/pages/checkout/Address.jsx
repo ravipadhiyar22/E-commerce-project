@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../../../api/axios.js"
 import { useCart } from '../../../context/Cartcontext.jsx';
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Shield } from 'lucide-react';
-import { Link } from "react-router-dom";
+import { Minus, Plus, Trash2, ArrowRight, Shield } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
 
 
 function Address() {
+
+  const usenavigate = useNavigate()
   const [form, setForm] = useState({
     houseno: "",
     street: "",
@@ -85,6 +87,54 @@ function Address() {
 
   const [payment, setpayment] = useState("");
   const [selectedaddress, setselectedaddress] = useState("")
+
+
+  function resitem({ productid, image, name, price, selling_price, quantity }) {
+    const newarr = items.map((items) => ({
+      productid: productid,
+      productname: name,
+      image: image,
+      quantity: quantity,
+      price: price,
+      selling_price: selling_price
+    }))
+    return newarr;
+  }
+
+  // resitem();
+
+
+  const handlechekout = async (e) => {
+    try {
+
+      if (!selectedaddress) {
+        alert("plase select the address");
+        return;
+      }
+
+      if (!payment) {
+        alert("please select the payment");
+        return;
+      }
+
+
+      const orderres = await api.post("/checkout/placeorder", { user: user._id, items: resitem(cartItems), paytype: payment, total, address: selectedaddress });
+
+      if (orderres.status === 200) {
+        usenavigate("/confirmorder")
+      }
+
+      
+    } catch (error) {
+      seterror(error?.response?.data?.message)
+
+    }
+  }
+
+
+
+
+  // -----------------------------return---------------------------
   return (
     <div className="max-w-lvh mx-auto mt-10 p-4">
       <h2 className="text-2xl font-semibold mb-6">Add New Address</h2>
@@ -92,6 +142,7 @@ function Address() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* House No. & Street in one row */}
         <div className="grid grid-cols-2 gap-4">
+          {/* ---------------house no---------------------- */}
           <div>
             <label className="block text-sm mb-1" htmlFor="houseno">
               House No.
@@ -107,6 +158,7 @@ function Address() {
               placeholder="Enter house no."
             />
           </div>
+          {/* ---------------street---------------------- */}
 
           <div>
             <label className="block text-sm mb-1" htmlFor="street">
@@ -125,7 +177,7 @@ function Address() {
           </div>
         </div>
 
-        {/* Building */}
+        {/*----------------- Building ---------------------------*/}
         <div>
           <label className="block text-sm mb-1" htmlFor="building">
             Building
@@ -142,7 +194,7 @@ function Address() {
           />
         </div>
 
-        {/* Society */}
+        {/*----------------------- Society ----------------------*/}
         <div>
           <label className="block text-sm mb-1" htmlFor="socity">
             Society
@@ -159,7 +211,7 @@ function Address() {
           />
         </div>
 
-        {/* City & Pincode */}
+        {/*----------------------------- City & Pincode ----------------------*/}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm mb-1" htmlFor="city">
@@ -195,6 +247,9 @@ function Address() {
           </div>
         </div>
 
+
+        {/* ---------------submit address---------------------- */}
+
         <button
           type="submit"
           className="w-full bg-black text-white py-2 hover:bg-gray-800 transition"
@@ -216,11 +271,14 @@ function Address() {
         <div className="flex gap-20 mt-10">
 
           {address.map((address) => {
+            console.log(address);
+            console.log("this si cart ites", cartItems)
             return (
               // <div key={address}>
               //   <input type="radio" name="address" id={`${address._id}`} />
               //   <label htmlFor="address">{address.houseno}</label>
               // </div >
+
               <label key={address._id}>
                 <input
                   type="radio"
@@ -398,7 +456,7 @@ function Address() {
               </div>
             </div>
 
-            <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg">
+            <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg" onSubmit={handlechekout}>
               <span>Proceed to Checkout</span>
               <ArrowRight className="h-5 w-5" />
             </button>

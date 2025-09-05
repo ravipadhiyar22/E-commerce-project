@@ -71,11 +71,11 @@ function Addproduct() {
             await api.post("/products/addproduct", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            alert("✅ Product added successfully!");
+            alert("Product added successfully!");
             usenavigate("/admin")
 
         } catch (error) {
-            console.error("Error adding product:", error);
+            console.error("Error adding product:", error?.respose?.data?.message);
         }
     }
 
