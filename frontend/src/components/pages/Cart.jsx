@@ -31,7 +31,7 @@ const Cart = () => {
     {
       icon: <Truck className="h-5 w-5" />,
       title: "Free Shipping",
-      description: subtotal > 50 ? "Qualified!" : `Add $${(50 - subtotal).toFixed(2)} more`
+      description: subtotal > 50 ? "Qualified!" : `Add ₹${(50 - subtotal).toFixed(2)} more`
     },
     {
       icon: <Shield className="h-5 w-5" />,
@@ -126,9 +126,9 @@ const Cart = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       {/* Price */}
                       <div className="flex items-center space-x-2">
-                        <span className="text-xl font-bold text-purple-600">${item.selling_price}</span>
+                        <span className="text-xl font-bold text-purple-600">₹{item.selling_price}</span>
                         {item.price && (
-                          <span className="text-sm text-gray-500 line-through">${item.price}</span>
+                          <span className="text-sm text-gray-500 line-through">₹{item.price}</span>
                         )}
                       </div>
 
@@ -153,7 +153,7 @@ const Cart = () => {
                           </button>
                         </div>
                         <span className="text-lg font-semibold text-gray-900">
-                          ${(item.selling_price * item.quantity).toFixed(2)}
+                          ₹{(item.selling_price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -215,7 +215,7 @@ const Cart = () => {
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
 
                 {savings > 0 && (
@@ -228,27 +228,27 @@ const Cart = () => {
                 {isPromoApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount (LUXE10)</span>
-                    <span>-${discount.toFixed(2)}</span>
+                    <span>-₹{discount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-medium">
-                    {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'Free' : `₹${shipping.toFixed(2)}`}
                   </span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                  <span className="font-medium">₹{tax.toFixed(2)}</span>
                 </div>
 
                 <hr className="border-gray-200" />
 
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-purple-600">${total.toFixed(2)}</span>
+                  <span className="text-purple-600">₹{total.toFixed(2)}</span>
                 </div>
               </div>
 

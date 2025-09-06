@@ -91,9 +91,9 @@ function ProductCard({ product, viewMode }) {
                     {/* Price */}
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
-                            <span className="text-xl font-bold text-purple-600">${product.selling_price}</span>
+                            <span className="text-xl font-bold text-purple-600">₹{product.selling_price}</span>
                             {product.price && (
-                                <span className="text-sm text-gray-500 line-through">${product.price}</span>
+                                <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
                             )}
                         </div>
                     </div>

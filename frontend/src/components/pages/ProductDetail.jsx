@@ -131,13 +131,13 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-purple-600">${product.selling_price}</span>
+                <span className="text-3xl font-bold text-purple-600">₹{product.selling_price}</span>
                 {product.price && (
-                  <span className="text-xl text-gray-500 line-through">${product.price}</span>
+                  <span className="text-xl text-gray-500 line-through">₹{product.price}</span>
                 )}
                 {product.price && product.selling_price && product.price > product.selling_price && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Save ${(product.price - product.selling_price).toFixed(2)}
+                    Save ₹{(product.price - product.selling_price).toFixed(2)}
                   </span>)}
               </div>
             </div>
@@ -209,7 +209,7 @@ const ProductDetail = () => {
                 <Truck className="h-6 w-6 text-purple-600" />
                 <div>
                   <p className="font-medium text-gray-900">Free Shipping</p>
-                  <p className="text-sm text-gray-600">On orders over $50</p>
+                  <p className="text-sm text-gray-600">On orders over ₹50</p>
                 </div>
               </div>
 
@@ -302,7 +302,7 @@ const ProductDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {Object.entries(product.details).map(([key, value]) => (
                     <div key={key} className="flex">
-                      <span className="font-medium text-gray-900 capitalize w-32">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                      <span className="font-medium text-gray-900 capitalize w-32">{key.replace(/([A-Z])/g, ' ₹1')}:</span>
                       <span className="text-gray-700">{value}</span>
                     </div>
                   ))}
@@ -373,7 +373,7 @@ const ProductDetail = () => {
                     </div>
                     <span className="text-sm text-gray-600 ml-2">({relatedProduct.rating})</span>
                   </div>
-                  <p className="text-xl font-bold text-purple-600">${relatedProduct.price}</p>
+                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.price}</p>
                 </div>
               </Link>
             ))}

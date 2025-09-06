@@ -40,8 +40,8 @@ function FeatureProductcart({ product }) {
 
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-purple-600">${product.selling_price}</span>
-                        <span className="text-lg text-gray-500 line-through">${product.price}</span>
+                        <span className="text-2xl font-bold text-purple-600">₹{product.selling_price}</span>
+                        <span className="text-lg text-gray-500 line-through">₹{product.price}</span>
                     </div>
                 </div>
 
