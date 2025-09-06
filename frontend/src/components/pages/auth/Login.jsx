@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import api from '../../api/axios';
-import useAuth from '../../context/Authcontext';
-import { mergeLocalToServerOnLogin } from '../../utils/ServerCart';
+import api from '../../../api/axios';
+import useAuth from '../../../context/Authcontext';
+import { mergeLocalToServerOnLogin } from '../../../utils/ServerCart';
 
 const Login = () => {
 

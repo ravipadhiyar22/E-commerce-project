@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from 'lucide-react';
-import api from '../../api/axios';
+import api from '../../../api/axios';
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -192,7 +192,7 @@ const Signup = () => {
             {/* 7. Display any error message */}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-            
+
             {/* Checkboxes */}
             <div className="space-y-4">
               <div className="flex items-center">
