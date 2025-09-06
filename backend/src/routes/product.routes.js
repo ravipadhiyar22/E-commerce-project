@@ -12,6 +12,7 @@ import {
     findname
 } from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
+import { addOrUpdateReview, getProductReviews } from "../controller/review.controller.js"
 const router = express.Router()
 
 
@@ -20,6 +21,10 @@ router.get("/productcard", getproductcard);
 router.get("/findname", findname);
 router.get("/search", searchproduct);
 router.get("/:slug", singleproduct);
+
+// reviews
+router.get("/:productId/reviews", getProductReviews);
+router.post("/:productId/reviews", verifyJWT, addOrUpdateReview);
 
 
 //protected routes

@@ -78,22 +78,26 @@ function ProductCard({ product, viewMode }) {
                             {[...Array(5)].map((_, i) => (
                                 <Star
                                     key={i}
-                                    className={`h-4 w-4 ${i < Math.floor(product.rating)
+                                    className={`h-4 w-4 ${i < Math.round(product.averageRating || 0)
                                         ? 'text-yellow-400 fill-current'
                                         : 'text-gray-300'
                                         }`}
                                 />
                             ))}
                         </div>
-                        <span className="text-sm text-gray-600 ml-2">({product.reviews})</span>
+                        <span className="text-sm text-gray-600 ml-2">
+                            {(product.numReviews || 0) > 0
+                                ? `${(product.averageRating || 0).toFixed ? (Number(product.averageRating).toFixed(1)) : Number(product.averageRating || 0)} • ${product.numReviews} review${product.numReviews > 1 ? 's' : ''}`
+                                : 'No reviews yet'}
+                        </span>
                     </div>
 
                     {/* Price */}
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
-                            <span className="text-xl font-bold text-purple-600">${product.selling_price}</span>
+                            <span className="text-xl font-bold text-purple-600">₹{product.selling_price}</span>
                             {product.price && (
-                                <span className="text-sm text-gray-500 line-through">${product.price}</span>
+                                <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
                             )}
                         </div>
                     </div>

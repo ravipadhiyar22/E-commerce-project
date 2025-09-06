@@ -1,4 +1,5 @@
 import { Product } from "../models/product.models.js";
+import { Review } from "../models/review.models.js";
 import { uploadfile } from "../utils/claudinary.js";
 import { v2 as claudinary } from "cloudinary";
 
@@ -156,7 +157,19 @@ const getallproduct = async (req, res) => {
             return res.status(400).json({ message: "product not get from db" });
         }
 
-        return res.status(200).json({ success: true, products });
+        const productIds = products.map(p => p._id);
+        const stats = await Review.aggregate([
+            { $match: { product: { $in: productIds } } },
+            { $group: { _id: "$product", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+        ]);
+        const map = Object.fromEntries(stats.map(s => [String(s._id), { avg: s.avg, count: s.count }]));
+        const withRatings = products.map(p => ({
+            ...p,
+            averageRating: map[String(p._id)] ? Number(map[String(p._id)].avg || 0) : 0,
+            numReviews: map[String(p._id)]?.count || 0
+        }));
+
+        return res.status(200).json({ success: true, products: withRatings });
     } catch (error) {
         console.log("error while get all products:", error);
         return res.status(500).json({ message: "error while get all products" });
@@ -168,13 +181,25 @@ const getallproduct = async (req, res) => {
 const getproductcard = async (req, res) => {
     try {
 
-        const product = await Product.find().lean().select("-description -notes -details");
+        const products = await Product.find().lean().select("-description -notes -details");
 
-        if (!product) {
+        const productIds = products.map(p => p._id);
+        const stats = await Review.aggregate([
+            { $match: { product: { $in: productIds } } },
+            { $group: { _id: "$product", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+        ]);
+        const map = Object.fromEntries(stats.map(s => [String(s._id), { avg: s.avg, count: s.count }]));
+        const withRatings = products.map(p => ({
+            ...p,
+            averageRating: map[String(p._id)] ? Number(map[String(p._id)].avg || 0) : 0,
+            numReviews: map[String(p._id)]?.count || 0
+        }));
+
+        if (!withRatings) {
             return res.status(401).json({ success: false, message: "can not get product" });
         }
 
-        return res.status(200).json({ success: true, product });
+        return res.status(200).json({ success: true, product: withRatings });
 
     } catch (error) {
         console.log("errro while get card data of product", error);
@@ -193,7 +218,14 @@ const singleproduct = async (req, res) => {
             return res.status(401).json({ success: false, message: "can not find prouct" });
         }
 
-        return res.status(200).json({ success: true, productdata });
+        const stats = await Review.aggregate([
+            { $match: { product: productdata._id } },
+            { $group: { _id: "$product", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+        ]);
+        const averageRating = stats[0]?.avg || 0;
+        const numReviews = stats[0]?.count || 0;
+
+        return res.status(200).json({ success: true, productdata: { ...productdata.toObject(), averageRating, numReviews } });
 
     } catch (error) {
         console.log("error while find single product", error);
@@ -211,7 +243,7 @@ const searchproduct = async (req, res) => {
             return res.status(400).json({ success: false, message: "please provide proper name" });
         }
         console.log("query", query);
-        const product = await Product.find({
+        const products = await Product.find({
             $or: [
                 { name: { $regex: query, $options: 'i' } },
                 { description: { $regex: query, $options: 'i' } },
@@ -219,16 +251,28 @@ const searchproduct = async (req, res) => {
                 { details: { $regex: query, $options: 'i' } },
                 { category: { $regex: query, $options: 'i' } }
             ]
-        })
+        }).lean();
 
-        if (!product) {
+        if (!products) {
             return res.status(400).json({ success: false, message: "product not found" });
         }
+
+        const productIds = products.map(p => p._id);
+        const stats = await Review.aggregate([
+            { $match: { product: { $in: productIds } } },
+            { $group: { _id: "$product", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+        ]);
+        const map = Object.fromEntries(stats.map(s => [String(s._id), { avg: s.avg, count: s.count }]));
+        const withRatings = products.map(p => ({
+            ...p,
+            averageRating: map[String(p._id)] ? Number(map[String(p._id)].avg || 0) : 0,
+            numReviews: map[String(p._id)]?.count || 0
+        }));
 
         return res.status(200).json({
             success: true,
             message: "product find successfully",
-            product
+            product: withRatings
         });
 
 

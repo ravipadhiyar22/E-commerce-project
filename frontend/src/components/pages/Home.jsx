@@ -43,7 +43,7 @@ const Home = () => {
     {
       icon: <Truck className="h-8 w-8" />,
       title: "Free Shipping",
-      description: "Free shipping on orders over $50"
+      description: "Free shipping on orders over ₹50"
     },
     {
       icon: <Shield className="h-8 w-8" />,

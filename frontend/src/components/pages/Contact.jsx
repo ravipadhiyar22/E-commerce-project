@@ -55,7 +55,7 @@ const Contact = () => {
   const faqs = [
     {
       question: "How long does shipping take?",
-      answer: "Standard shipping takes 3-5 business days, while express shipping takes 1-2 business days. Free shipping is available on orders over $50."
+      answer: "Standard shipping takes 3-5 business days, while express shipping takes 1-2 business days. Free shipping is available on orders over ₹50."
     },
     {
       question: "What is your return policy?",

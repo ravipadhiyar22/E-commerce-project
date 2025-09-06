@@ -6,6 +6,7 @@ import { setLocalQuantity, addLocalItem } from "../../utils/LocalCart.js"
 import useAuth from '../../context/Authcontext.jsx';
 import { addtocartservice } from "../../utils/ServerCart.js"
 import { loadWishlist, toggleWishlistService } from '../../utils/wishlistService.js';
+import { fetchReviews, addOrUpdateReview } from '../../api/reviews.js';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -14,6 +15,9 @@ const ProductDetail = () => {
   const [product, setproduct] = useState([]);
   const { user } = useAuth();
   const [wishIds, setWishIds] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [myRating, setMyRating] = useState(0);
+  const [myComment, setMyComment] = useState("");
 
   useEffect(() => {
 
@@ -41,6 +45,16 @@ const ProductDetail = () => {
       }
     })();
   }, [user]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!product?._id) return;
+        const { reviews } = await fetchReviews(product._id);
+        setReviews(reviews || []);
+      } catch (e) { }
+    })();
+  }, [product?._id]);
 
   async function handleclick() {
     try {
@@ -120,24 +134,24 @@ const ProductDetail = () => {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-5 w-5 ${i < Math.floor(product.rating)
+                      className={`h-5 w-5 ${i < Math.floor(product.averageRating || 0)
                         ? 'text-yellow-400 fill-current'
                         : 'text-gray-300'
                         }`}
                     />
                   ))}
                 </div>
-                <span className="text-gray-600 ml-2">({product.reviews} reviews)</span>
+                <span className="text-gray-600 ml-2">({product.numReviews || 0} reviews)</span>
               </div>
 
               <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-purple-600">${product.selling_price}</span>
+                <span className="text-3xl font-bold text-purple-600">₹{product.selling_price}</span>
                 {product.price && (
-                  <span className="text-xl text-gray-500 line-through">${product.price}</span>
+                  <span className="text-xl text-gray-500 line-through">₹{product.price}</span>
                 )}
                 {product.price && product.selling_price && product.price > product.selling_price && (
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Save ${(product.price - product.selling_price).toFixed(2)}
+                    Save ₹{(product.price - product.selling_price).toFixed(2)}
                   </span>)}
               </div>
             </div>
@@ -209,7 +223,7 @@ const ProductDetail = () => {
                 <Truck className="h-6 w-6 text-purple-600" />
                 <div>
                   <p className="font-medium text-gray-900">Free Shipping</p>
-                  <p className="text-sm text-gray-600">On orders over $50</p>
+                  <p className="text-sm text-gray-600">On orders over ₹50</p>
                 </div>
               </div>
 
@@ -302,7 +316,7 @@ const ProductDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {Object.entries(product.details).map(([key, value]) => (
                     <div key={key} className="flex">
-                      <span className="font-medium text-gray-900 capitalize w-32">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                      <span className="font-medium text-gray-900 capitalize w-32">{key.replace(/([A-Z])/g, ' ₹1')}:</span>
                       <span className="text-gray-700">{value}</span>
                     </div>
                   ))}
@@ -313,22 +327,56 @@ const ProductDetail = () => {
             {activeTab === 'reviews' && (
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Customer Reviews</h3>
+
+                {/* Add review form (only for logged in) */}
+                {user && (
+                  <div className="mb-8 p-4 border rounded-xl bg-white">
+                    <div className="mb-3">
+                      <label className="block text-sm font-medium mb-1">Your Rating</label>
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map(n => (
+                          <button type="button" key={n} onClick={() => setMyRating(n)} className="p-1">
+                            <Star className={`h-6 w-6 ${n <= myRating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="block text-sm font-medium mb-1">Comment</label>
+                      <textarea value={myComment} onChange={(e) => setMyComment(e.target.value)} rows={3} className="w-full border rounded-lg p-2" placeholder="Share your experience..." />
+                    </div>
+                    <button
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg"
+                      onClick={async () => {
+                        try {
+                          if (!product?._id) return;
+                          await addOrUpdateReview(product._id, { rating: myRating, comment: myComment });
+                          const { reviews } = await fetchReviews(product._id);
+                          setReviews(reviews || []);
+                          setMyComment("");
+                        } catch (e) { }
+                      }}
+                      disabled={!myRating}
+                    >Submit Review</button>
+                  </div>
+                )}
+
                 <div className="space-y-6">
-                  {[1, 2, 3].map((review) => (
-                    <div key={review} className="border-b border-gray-200 pb-6">
-                      <div className="flex items-center mb-3">
+                  {reviews.length === 0 && (
+                    <p className="text-gray-600">No reviews yet. Be the first to review.</p>
+                  )}
+                  {reviews.map((rv) => (
+                    <div key={rv._id} className="border-b border-gray-200 pb-6">
+                      <div className="flex items-center mb-2">
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                            <Star key={i} className={`h-4 w-4 ${i < rv.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
                           ))}
                         </div>
-                        <span className="ml-3 font-medium text-gray-900">Sarah Johnson</span>
-                        <span className="ml-3 text-sm text-gray-500">2 weeks ago</span>
+                        <span className="ml-3 font-medium text-gray-900">{rv.user?.username || 'User'}</span>
+                        <span className="ml-3 text-sm text-gray-500">{new Date(rv.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <p className="text-gray-700">
-                        Absolutely love this fragrance! It's sophisticated yet playful, perfect for both
-                        day and evening wear. The longevity is impressive and I always get compliments when wearing it.
-                      </p>
+                      {rv.comment && <p className="text-gray-700">{rv.comment}</p>}
                     </div>
                   ))}
                 </div>
@@ -373,7 +421,7 @@ const ProductDetail = () => {
                     </div>
                     <span className="text-sm text-gray-600 ml-2">({relatedProduct.rating})</span>
                   </div>
-                  <p className="text-xl font-bold text-purple-600">${relatedProduct.price}</p>
+                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.price}</p>
                 </div>
               </Link>
             ))}
