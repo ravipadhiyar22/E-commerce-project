@@ -10,7 +10,7 @@ import Signup from "./components/pages/auth/Signup.jsx";
 import Cart from "./components/pages/Cart.jsx";
 import Navbar from "./components/header/Navbar.jsx";
 import Footer from "./components/footer/Footer.jsx";
-import Profile from "./components/pages/Profile.jsx";
+import Profile from "./components/pages/profile/Profile.jsx";
 import AdminPanel from "./components/pages/AdminPanel.jsx";
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ScrollToTop from './components/pages/ScrollToTop.jsx';
@@ -24,6 +24,7 @@ import Loader from './components/Loader.jsx';
 import Address from './components/pages/checkout/Address.jsx';
 import { Cartcontext } from './context/Cartcontext.jsx';
 import OrderConfirm from "./components/pages/checkout/OrderConfirm.jsx"
+import Orders from "./components/pages/profile/Orders.jsx"
 
 function App() {
 
@@ -43,6 +44,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+
+
             <Route path="/cart" element={
               <Cartcontext>
                 <Cart />
@@ -57,6 +60,7 @@ function App() {
                 <OrderConfirm />
               </ProtectedRoute>
             } />
+
             <Route path='/address' element={
               <Cartcontext>
                 <Address />
@@ -69,7 +73,9 @@ function App() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
-            } />
+            } >
+              <Route path='orders' element={<Orders />} />
+            </Route>
 
             {/* only admin can access this route */}
 
