@@ -60,17 +60,15 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     orderdate: {
-        type: Date,
-        default: () => {
-            const now = new Date();
-            return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-        }
+        type: String,
+        default: () => new Date().toISOString().split("T")[0]
     },
     expectedDelivery: {
-        type: Date,
+        type: String,
         default: () => {
             const now = new Date();
-            return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 4));
+            now.setDate(now.getDate() + 4);
+            return now.toISOString().split("T")[0];
         }
     },
 

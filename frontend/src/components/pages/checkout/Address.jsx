@@ -3,6 +3,7 @@ import api from "../../../api/axios.js"
 import { useCart } from '../../../context/Cartcontext.jsx';
 import { Minus, Plus, Trash2, ArrowRight, Shield } from 'lucide-react';
 import { Link, useNavigate } from "react-router-dom";
+import { clearservercart } from "../../../api/Cart.js";
 
 
 function Address() {
@@ -40,6 +41,8 @@ function Address() {
 
   const [success, setsuccess] = useState(false);
   const [error, seterror] = useState(undefined);
+
+  //-----------------address--------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -68,6 +71,7 @@ function Address() {
 
 
   const [address, setaddress] = useState([])
+  // ----------------------------- fetch address-----------------------------
   useEffect(() => {
 
     const fetchaddress = async () => {
@@ -89,8 +93,8 @@ function Address() {
   const [selectedaddress, setselectedaddress] = useState("")
 
 
-  function resitem({ productid, image, name, price, selling_price, quantity }) {
-    const newarr = items.map((items) => ({
+  function resitem(items) {
+    const newarr = items.map(({ productid, image, name, price, selling_price, quantity }) => ({
       productid: productid,
       productname: name,
       image: image,
@@ -103,8 +107,10 @@ function Address() {
 
   // resitem();
 
-
+  //---------------------------- place order ------------------------------
+  const [isloading, setloading] = useState(false);
   const handlechekout = async (e) => {
+    e.preventDefault();
     try {
 
       if (!selectedaddress) {
@@ -117,14 +123,17 @@ function Address() {
         return;
       }
 
+      setloading(true)
+      const orderres = await api.post("/checkout/placeorder", { user: user._id, items: resitem(cartItems), paytype: payment, total, address: selectedaddress, savings });
 
-      const orderres = await api.post("/checkout/placeorder", { user: user._id, items: resitem(cartItems), paytype: payment, total, address: selectedaddress });
-
+      await clearservercart();
+      setloading(false);
       if (orderres.status === 200) {
         usenavigate("/confirmorder")
+        window.location.reload()
       }
 
-      
+
     } catch (error) {
       seterror(error?.response?.data?.message)
 
@@ -305,7 +314,7 @@ function Address() {
       <div className="max-w-lvh mx-auto mt-10 py-4 mb-4">
         <h2 className="mt-6 text-lg font-medium">Payment method</h2>
         <div>
-          <input type="radio" name="payment" id="payment" value="cash" checked={payment === "cash"} onChange={(e) => setpayment(e.target.value)} />
+          <input type="radio" name="payment" id="payment" value="cod" checked={payment === "cod"} onChange={(e) => setpayment(e.target.value)} />
           <label htmlFor="payment">cash</label>
         </div>
       </div>
@@ -456,9 +465,19 @@ function Address() {
               </div>
             </div>
 
-            <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg" onSubmit={handlechekout}>
-              <span>Proceed to Checkout</span>
-              <ArrowRight className="h-5 w-5" />
+            <button className="w-full mt-6 bg-gradient-to-r from-purple-600 to-amber-500 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-amber-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg" type="submit" onClick={handlechekout}>
+              {isloading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <span>Order Placing</span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight className="h-5 w-5" />
+                </div>
+              )}
+
             </button>
 
             <div className="mt-4 text-center">
