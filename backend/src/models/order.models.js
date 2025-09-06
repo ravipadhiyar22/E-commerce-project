@@ -51,22 +51,30 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    savings: {
+        type: Number,
+    },
     address: {
-        orderaddress: mongoose.Schema.Types.ObjectId,
-        ref: "Address"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Address",
+        required: true
     },
     orderdate: {
         type: Date,
-        default: Date.now,
+        default: () => {
+            const now = new Date();
+            return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+        }
     },
     expectedDelivery: {
         type: Date,
         default: () => {
-            const date = new Date();
-            date.setDate(date.getDate() + 4);
-            return date;
+            const now = new Date();
+            return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 4));
         }
     },
 
 
 }, { timestamps: true })
+
+export const Order = mongoose.model("Order", orderSchema)
