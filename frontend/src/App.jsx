@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home.jsx';
 import Products from "./components/pages/Products.jsx";
 import ProductDetail from "./components/pages/ProductDetail.jsx";
 import About from "./components/pages/About.jsx";
 import Contact from "./components/pages/Contact.jsx";
-import Login from "./components/pages/Login.jsx";
-import Signup from "./components/pages/Signup.jsx";
+import Login from "./components/pages/auth/Login.jsx";
+import Signup from "./components/pages/auth/Signup.jsx";
 import Cart from "./components/pages/Cart.jsx";
 import Navbar from "./components/header/Navbar.jsx";
 import Footer from "./components/footer/Footer.jsx";
@@ -27,7 +26,6 @@ import { Cartcontext } from './context/Cartcontext.jsx';
 import OrderConfirm from "./components/pages/checkout/OrderConfirm.jsx"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <Router>
