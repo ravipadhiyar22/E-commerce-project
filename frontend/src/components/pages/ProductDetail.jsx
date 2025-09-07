@@ -68,32 +68,19 @@ const ProductDetail = () => {
   }
 
 
-  const relatedProducts = [
-    {
-      id: 2,
-      name: "Golden Sunrise",
-      price: 95.99,
-      image: "https://images.pexels.com/photos/1961795/pexels-photo-1961795.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.9
-    },
-    {
-      id: 3,
-      name: "Ocean Breeze",
-      price: 75.99,
-      image: "https://images.pexels.com/photos/1766678/pexels-photo-1766678.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.7
-    },
-    {
-      id: 4,
-      name: "Rose Garden",
-      price: 110.99,
-      image: "https://images.pexels.com/photos/1179760/pexels-photo-1179760.jpeg?auto=compress&cs=tinysrgb&w=300",
-      rating: 4.9
-    }
-  ];
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await api.get('/products/suggested/first3');
+        setRelatedProducts(res.data.products || []);
+      } catch (e) { }
+    })();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -394,8 +381,8 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {relatedProducts.map((relatedProduct) => (
               <Link
-                key={relatedProduct.id}
-                to={`/product/${relatedProduct.id}`}
+                key={relatedProduct._id}
+                to={`/products/${relatedProduct.slug}`}
                 className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
               >
                 <div className="aspect-square overflow-hidden">
@@ -407,21 +394,7 @@ const ProductDetail = () => {
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{relatedProduct.name}</h3>
-                  <div className="flex items-center mb-3">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${i < Math.floor(relatedProduct.rating)
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
-                            }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-600 ml-2">({relatedProduct.rating})</span>
-                  </div>
-                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.price}</p>
+                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.selling_price ?? relatedProduct.price}</p>
                 </div>
               </Link>
             ))}

@@ -9,7 +9,8 @@ import {
     singleproduct,
     updateproduct,
     searchproduct,
-    findname
+    findname,
+    suggestedproducts
 } from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
 import { addOrUpdateReview, getProductReviews } from "../controller/review.controller.js"
@@ -20,6 +21,7 @@ router.get("/allproduct", getallproduct);
 router.get("/productcard", getproductcard);
 router.get("/findname", findname);
 router.get("/search", searchproduct);
+router.get("/suggested/first3", suggestedproducts);
 router.get("/:slug", singleproduct);
 
 // reviews

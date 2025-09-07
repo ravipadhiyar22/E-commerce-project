@@ -312,6 +312,21 @@ const findname = async (req, res) => {
         return res.status(500).json({ success: false, message: "internal server error while find product" });
     }
 }
+
+// -------------------------------suggested (first 3) products without aggregate -----------------------
+
+const suggestedproducts = async (req, res) => {
+    try {
+        const products = await Product.find()
+            .select("name slug image price selling_price category")
+            .limit(3)
+            .lean();
+
+        return res.status(200).json({ success: true, products });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "failed to load suggestions" });
+    }
+}
 export {
     addproduct,
     deleteproduct,
@@ -320,5 +335,6 @@ export {
     singleproduct,
     updateproduct,
     searchproduct,
-    findname
+    findname,
+    suggestedproducts
 };
