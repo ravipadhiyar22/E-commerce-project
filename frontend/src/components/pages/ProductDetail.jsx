@@ -25,7 +25,7 @@ const ProductDetail = () => {
       try {
         const safeslug = encodeURIComponent(slug);
         const resdata = await api.get(`/products/${safeslug}`)
-        console.log(resdata)
+        // console.log(resdata)
         setproduct(resdata.data.productdata);
 
       } catch (error) {
@@ -392,26 +392,17 @@ const ProductDetail = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{relatedProduct.name}</h3>
+                <div className="p-5" >
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{relatedProduct.name}</h3>
 
-                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.selling_price ?? relatedProduct.price}</p>
-
-                  <div className="flex items-center mb-3">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${i < Math.floor(relatedProduct.rating)
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
-                            }`}
-                        />
-                      ))}
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xl font-bold text-purple-600">₹{product.selling_price}</span>
+                      {product.price && (
+                        <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
+                      )}
                     </div>
-                    <span className="text-sm text-gray-600 ml-2">({relatedProduct.rating})</span>
                   </div>
-                  <p className="text-xl font-bold text-purple-600">₹{relatedProduct.price}</p>
                 </div>
               </Link>
             ))}

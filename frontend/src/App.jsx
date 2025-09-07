@@ -18,6 +18,7 @@ import AdminDashbord from './components/admin/AdminDashbord.jsx';
 import Adminproduct from "./components/admin/Products.jsx"
 import Addproduct from './components/admin/Addproduct.jsx';
 import Updateproduct from "./components/admin/Updateproduct.jsx"
+import OrderManagement from './components/admin/OrderManagement.jsx';
 import Wishlist from "./components/pages/Wishlist.jsx";
 import Searchpage from './components/pages/Searchpage.jsx';
 import Loader from './components/Loader.jsx';
@@ -88,6 +89,7 @@ function App() {
               <Route path='products' element={<Adminproduct />} />
               <Route path='addproduct' element={<Addproduct />} />
               <Route path='products/update/:id' element={<Updateproduct />} />
+              <Route path='orders' element={<OrderManagement />} />
             </Route>
 
           </Routes>
