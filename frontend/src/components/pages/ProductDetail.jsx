@@ -394,9 +394,9 @@ const ProductDetail = () => {
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{relatedProduct.name}</h3>
-<<<<<<< HEAD
+
                   <p className="text-xl font-bold text-purple-600">₹{relatedProduct.selling_price ?? relatedProduct.price}</p>
-=======
+
                   <div className="flex items-center mb-3">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
@@ -412,7 +412,6 @@ const ProductDetail = () => {
                     <span className="text-sm text-gray-600 ml-2">({relatedProduct.rating})</span>
                   </div>
                   <p className="text-xl font-bold text-purple-600">₹{relatedProduct.price}</p>
->>>>>>> 91874c76dd7b139b64d64f383fb60e256a904f5a
                 </div>
               </Link>
             ))}
