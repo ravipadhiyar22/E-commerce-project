@@ -47,17 +47,22 @@ const Wishlist = () => {
                         <Link to="/products" className="inline-block px-5 py-3 bg-gradient-to-r from-purple-600 to-amber-500 text-white rounded-lg">Browse Products</Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         {items.map((it) => (
-                            <div key={it.product} className="bg-white rounded-xl shadow-sm overflow-hidden">
-                                <div className="aspect-video bg-gray-100">
-                                    <img src={it.image} alt={it.name} className="w-full h-full object-cover" />
+                            <div key={it.product} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                                <div className="aspect-[4/5] bg-gray-100 overflow-hidden">
+                                    <img src={it.image} alt={it.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                                 </div>
-                                <div className="p-5">
-                                    <h3 className="text-lg font-semibold text-gray-900">{it.name}</h3>
-                                    <p className="mt-1 text-purple-600 font-bold">${Number(it.price || 0).toFixed(2)}</p>
-                                    <div className="mt-4 flex items-center gap-3">
-                                        <Link to={`/products/${it.slug || ''}`} className="px-4 py-2 bg-gray-900 text-white rounded-lg">View</Link>
+                                <div className="p-6">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{it.name}</h3>
+                                    <p className="text-2xl text-purple-600 font-bold mb-4">₹{Number(it.price || 0).toFixed(2)}</p>
+                                    <div className="flex flex-col gap-3">
+                                        <Link 
+                                            to={`/products/${it.slug || ''}`} 
+                                            className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-amber-500 text-white rounded-lg font-semibold text-center hover:from-purple-700 hover:to-amber-600 transition-all duration-300 hover:scale-105"
+                                        >
+                                            View Product
+                                        </Link>
                                         <button
                                             type="button"
                                             onClick={async () => {
@@ -65,9 +70,9 @@ const Wishlist = () => {
                                                 const { items: refreshed } = await loadWishlist(user);
                                                 setItems(refreshed);
                                             }}
-                                            className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                                            className="w-full px-6 py-3 border-2 border-red-300 text-red-600 rounded-lg font-semibold hover:bg-red-50 hover:border-red-400 transition-all duration-300 hover:scale-105"
                                         >
-                                            Remove
+                                            Remove from Wishlist
                                         </button>
                                     </div>
                                 </div>

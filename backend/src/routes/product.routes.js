@@ -10,12 +10,14 @@ import {
     updateproduct,
     searchproduct,
     findname,
-    suggestedproducts
+    suggestedproducts,
+    featureproduct
 } from "../controller/product.controller.js"
 import { authorizeRoles } from "../middlewares/authrole.middleware.js"
 import { addOrUpdateReview, getProductReviews } from "../controller/review.controller.js"
 const router = express.Router()
 
+router.get("/featureproduct", featureproduct);
 
 router.get("/allproduct", getallproduct);
 router.get("/productcard", getproductcard);
@@ -27,7 +29,6 @@ router.get("/:slug", singleproduct);
 // reviews
 router.get("/:productId/reviews", getProductReviews);
 router.post("/:productId/reviews", verifyJWT, addOrUpdateReview);
-
 
 //protected routes
 

@@ -12,7 +12,7 @@ const Home = () => {
     ; (async () => {
       try {
 
-        const resproduct = await api.get("/products/allproduct");
+        const resproduct = await api.get("/products/featureproduct");
         setproduct(resproduct.data.products)
       } catch (error) {
         console.log("error while fetch allproducts", error);

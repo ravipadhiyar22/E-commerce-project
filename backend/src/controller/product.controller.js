@@ -327,6 +327,33 @@ const suggestedproducts = async (req, res) => {
         return res.status(500).json({ success: false, message: "failed to load suggestions" });
     }
 }
+
+const featureproduct = async (req, res) => {
+    try {
+        const products = await Product.find().limit(4).lean();
+
+        if (!products) {
+            return res.status(400).json({ message: "product not get from db" });
+        }
+
+        const productIds = products.map(p => p._id);
+        const stats = await Review.aggregate([
+            { $match: { product: { $in: productIds } } },
+            { $group: { _id: "$product", avg: { $avg: "$rating" }, count: { $sum: 1 } } }
+        ]);
+        const map = Object.fromEntries(stats.map(s => [String(s._id), { avg: s.avg, count: s.count }]));
+        const withRatings = products.map(p => ({
+            ...p,
+            averageRating: map[String(p._id)] ? Number(map[String(p._id)].avg || 0) : 0,
+            numReviews: map[String(p._id)]?.count || 0
+        }));
+
+        return res.status(200).json({ success: true, products: withRatings });
+    } catch (error) {
+        console.log("error while get all products:", error);
+        return res.status(500).json({ message: "error while get all products" });
+    }
+}
 export {
     addproduct,
     deleteproduct,
@@ -336,5 +363,6 @@ export {
     updateproduct,
     searchproduct,
     findname,
-    suggestedproducts
+    suggestedproducts,
+    featureproduct
 };

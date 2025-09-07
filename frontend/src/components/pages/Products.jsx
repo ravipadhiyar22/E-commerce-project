@@ -11,7 +11,7 @@ const Products = () => {
 
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState(initialcategory);
-  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
 
   const [products, setproducts] = useState([]);
   useEffect(() => {
