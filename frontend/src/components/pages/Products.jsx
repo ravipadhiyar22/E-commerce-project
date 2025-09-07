@@ -33,7 +33,7 @@ const Products = () => {
 
   const categories = [
     { value: 'all', label: 'All Products', count: products.length },
-    { value: 'women', label: 'For Her', count: products.filter(p => p.category === 'women').length },
+    { value: 'woman', label: 'For Her', count: products.filter(p => p.category === 'woman').length },
     { value: 'male', label: 'For Him', count: products.filter(p => p.category === 'male').length },
     { value: 'unisex', label: 'Unisex', count: products.filter(p => p.category === 'unisex').length }
   ];

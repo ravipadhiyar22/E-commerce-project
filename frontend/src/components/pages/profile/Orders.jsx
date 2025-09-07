@@ -51,21 +51,6 @@ function OrderCard({ order, onRefresh }) {
                 </div>
             </div>
 
-            {/* Status Progress Bar */}
-            {order.orderstatus !== 'cancelled' && (
-                <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700">Order Progress</span>
-                        <span className="text-sm text-gray-500">{Math.round(getStatusProgress(order.orderstatus))}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                            className={`bg-${getStatusColor(order.orderstatus)}-500 h-2 rounded-full transition-all duration-500`}
-                            style={{ width: `${getStatusProgress(order.orderstatus)}%` }}
-                        ></div>
-                    </div>
-                </div>
-            )}
 
             {/* Products */}
             <div className="space-y-4">
@@ -104,16 +89,7 @@ function OrderCard({ order, onRefresh }) {
             </div>
 
             {/* Footer */}
-            <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div className="flex items-center space-x-3">
-                    <p className="text-sm text-gray-700">
-                        <span className="font-semibold">Status:</span>
-                    </p>
-                    <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium bg-${getStatusColor(order.orderstatus)}-100 text-${getStatusColor(order.orderstatus)}-800`}>
-                        {getStatusIcon(order.orderstatus)}
-                        <span className="capitalize">{order.orderstatus}</span>
-                    </span>
-                </div>
+            <div className="mt-4 flex justify-end">
                 <div className="text-right">
                     <p className="text-xs text-gray-500 font-medium">
                         Deliver to: {order.address.city} - {order.address.pincode}

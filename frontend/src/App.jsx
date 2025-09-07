@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/pages/Home.jsx';
 import Products from "./components/pages/Products.jsx";
 import ProductDetail from "./components/pages/ProductDetail.jsx";
@@ -91,6 +91,7 @@ function App() {
               <Route path='products/update/:id' element={<Updateproduct />} />
               <Route path='orders' element={<OrderManagement />} />
             </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
 
           </Routes>
         </main>

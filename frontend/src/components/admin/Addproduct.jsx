@@ -29,7 +29,8 @@ function Addproduct() {
     });
 
     const [imagePreview, setImagePreview] = useState(null);
-    const usenavigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false);
+    const usenavigate = useNavigate();
     function handleformdata(e) {
         const { id, value } = e.target;
         setformdata((prev) => ({ ...prev, [id]: value }));
@@ -55,6 +56,7 @@ function Addproduct() {
     async function handlesubmin(e) {
         e.preventDefault();
         e.stopPropagation();
+        setIsLoading(true);
         const data = new FormData();
 
         data.append("name", formdata.name);
@@ -72,10 +74,12 @@ function Addproduct() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert("Product added successfully!");
-            usenavigate("/admin")
-
+            usenavigate("/admin");
         } catch (error) {
-            console.error("Error adding product:", error?.respose?.data?.message);
+            console.error("Error adding product:", error?.response?.data?.message);
+            alert("Failed to add product. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -211,9 +215,10 @@ function Addproduct() {
 
                 <button
                     type="submit"
-                    className=" bg-gradient-to-r from-purple-600 to-amber-500 rounded-r-lg hover:from-purple-700 hover:to-amber-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 w-full md:w-auto"
+                    disabled={isLoading}
+                    className="bg-gradient-to-r from-purple-600 to-amber-500 rounded-lg hover:from-purple-700 hover:to-amber-600 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-2 w-full md:w-auto transition-all duration-200 disabled:cursor-not-allowed"
                 >
-                    Add Product
+                    {isLoading ? 'Adding Product...' : 'Add Product'}
                 </button>
             </form>
         </div>
