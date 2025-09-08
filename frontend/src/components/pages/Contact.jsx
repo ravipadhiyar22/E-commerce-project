@@ -210,7 +210,7 @@ const Contact = () => {
                   <div className="text-center text-gray-500">
                     <MapPin className="h-12 w-12 mx-auto mb-2" />
                     <p className="font-medium">Interactive Map</p>
-                    <p className="text-sm">123 Luxury Avenue, NYC</p>
+                    <p className="text-sm">123 Luxury Avenue, india</p>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -218,7 +218,7 @@ const Contact = () => {
                     <MapPin className="h-5 w-5 text-purple-600 mt-1" />
                     <div>
                       <p className="font-medium text-gray-900">Address</p>
-                      <p className="text-gray-600">123 Luxury Avenue<br />New York, NY 10001</p>
+                      <p className="text-gray-600">123 Luxury Avenue<br />india, in 395006</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
