@@ -88,7 +88,7 @@ export default function ProductsPage() {
                                         )}
                                     </td>
                                     <td className="p-2 font-medium">{p.name}</td>
-                                    <td className="p-2">${p.selling_price ?? p.price}</td>
+                                    <td className="p-2">₹{p.selling_price ?? p.price}</td>
                                     <td className="p-2">{p.stock}</td>
                                     <td className="p-2 flex gap-2">
                                         <Link to={`/admin/products/update/${p._id}`} className="px-2 py-1 rounded bg-amber-500 text-white">Edit</Link>

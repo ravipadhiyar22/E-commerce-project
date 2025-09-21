@@ -64,7 +64,10 @@ function App() {
 
             <Route path='/address' element={
               <Cartcontext>
-                <Address />
+                <ProtectedRoute>
+
+                  <Address />
+                </ProtectedRoute>
               </Cartcontext>
 
             } />

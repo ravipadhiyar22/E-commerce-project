@@ -97,7 +97,7 @@ const Signup = () => {
         <div className="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Name Fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div >
               <div>
                 <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
                   User Name
@@ -142,7 +142,7 @@ const Signup = () => {
 
 
             {/* Password Fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div >
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                   Password

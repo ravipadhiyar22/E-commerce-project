@@ -111,10 +111,10 @@ export default function Profile() {
                                             <p className="text-lg font-bold text-purple-900">{user.username}</p>
                                         </div>
                                     </div>
-                                    <button className="mt-4 text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center space-x-1 hover:scale-105 transition-all duration-300">
+                                    {/* <button className="mt-4 text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center space-x-1 hover:scale-105 transition-all duration-300">
                                         <Edit3 className="h-4 w-4" />
                                         <span>Edit</span>
-                                    </button>
+                                    </button> */}
                                 </div>
 
                                 <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl hover:shadow-md hover:-translate-y-1 transition-all duration-300 animate-fade-in animate-delay-500">
@@ -127,10 +127,10 @@ export default function Profile() {
                                             <p className="text-lg font-bold text-blue-900">{user.email}</p>
                                         </div>
                                     </div>
-                                    <button className="mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1 hover:scale-105 transition-all duration-300">
+                                    {/* <button className="mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1 hover:scale-105 transition-all duration-300">
                                         <Edit3 className="h-4 w-4" />
                                         <span>Edit</span>
-                                    </button>
+                                    </button> */}
                                 </div>
 
                                 <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl hover:shadow-md hover:-translate-y-1 transition-all duration-300 animate-fade-in animate-delay-600">
