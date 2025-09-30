@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import api from "../../api/axios.js"
 import { Filter, Grid, List } from 'lucide-react';
 import ProductCard from './ProductCard.jsx';
+import Loader from "../Loader.jsx"
 
 const Products = () => {
   const [searchparams] = useSearchParams();
@@ -12,16 +13,16 @@ const Products = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState(initialcategory);
   const [priceRange, setPriceRange] = useState([0, 10000]);
-
+  const [loading, setloading] = useState(false);
   const [products, setproducts] = useState([]);
   useEffect(() => {
 
     ; (async () => {
       try {
-
+        setloading(true);
         const res = await api.get("/products/productcard");
         setproducts(res.data.product);
-
+        setloading(false)
       } catch (error) {
         console.log("erroe while fetch the productcard", error);
       }
@@ -147,9 +148,15 @@ const Products = () => {
 
             {/*----------------------- Products Grid -----------------------*/}
             <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-6`}>
-              {filteredProducts.map((product) =>
-                <ProductCard key={product._id} product={product} viewMode={viewMode} />
-              )}
+              {
+                loading ?
+                  <div className="col-span-full flex justify-center items-center h-[40vh]">
+                    <Loader />
+                  </div> 
+                  :
+                  filteredProducts.map((product) =>
+                    <ProductCard key={product._id} product={product} viewMode={viewMode} />
+                  )}
             </div>
 
             {/* -----------------------Load More -----------------------*/}

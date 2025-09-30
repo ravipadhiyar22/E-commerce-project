@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom';
 import { Truck, Shield, HeartHandshake, Sparkles } from 'lucide-react';
 import api from '../../api/axios';
 import FeatureProductcart from "./FeatureProductcart"
+// import Loader from "../Loader.jsx"
 
 const Home = () => {
 
   const [product, setproduct] = useState([]);
-
+  const [loading, setloding] = useState(false);
   useEffect(() => {
     ; (async () => {
       try {
-
+        setloding(true);
         const resproduct = await api.get("/products/featureproduct");
         setproduct(resproduct.data.products)
+        setloding(false);
       } catch (error) {
         console.log("error while fetch allproducts", error);
       }
@@ -21,6 +23,18 @@ const Home = () => {
     })();
   }, [])
 
+
+  function Loader() {
+    return (
+
+      <div className="flex justify-center items-center  space-x-2 h-[60vh]">
+        <div className="w-3 h-3 bg-black rounded-full animate-bounce"></div>
+        <div className="w-3 h-3 bg-black rounded-full animate-bounce delay-200"></div>
+        <div className="w-3 h-3 bg-black rounded-full animate-bounce delay-400"></div>
+      </div>
+
+    )
+  }
   const categories = [
     {
       name: "For Her",
@@ -138,6 +152,7 @@ const Home = () => {
       </section>
 
       {/* -----------------------Featured Products ----------------------- */}
+
       <section className="py-16 lg:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -151,10 +166,16 @@ const Home = () => {
 
           {/*----------------------- featured product container----------------------- */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
             {
-              product.map((product) =>
-                <FeatureProductcart key={product._id} product={product} />
-              )
+              loading ?
+                <div className="col-span-full flex justify-center items-center h-[40vh]">
+                  <Loader />
+                </div>
+                :
+                product.map((product) =>
+                  <FeatureProductcart key={product._id} product={product} />
+                )
             }
           </div>
 
